@@ -1,0 +1,6 @@
+@media print {
+    .back_button {
+        display: none;
+    }
+
+}

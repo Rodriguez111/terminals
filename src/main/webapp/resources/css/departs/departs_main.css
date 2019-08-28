@@ -1,0 +1,54 @@
+.table_header {
+    background: rgba(51, 89, 130, 0.53); /* Цвет фона ячеек */
+    padding: 1px; /* Поля вокруг текста */
+    text-align: center;
+    font-size:15px;
+}
+
+.main_block {
+    width: 100%;
+    margin:0;
+}
+
+.main_table {
+    width: 50%;
+    margin: auto;
+    table-layout:auto; /*Ширина столбцов по содержимому*/
+    background: #ccc;
+    border-radius: 12px;
+    border-spacing: 0;
+    border-collapse: collapse; /* Убираем двойные линии между ячейками */
+}
+
+.forms {
+    margin: 0;
+}
+
+.row {
+    background: #c8d2dd; /* Цвет фона ячеек */
+    padding: 5px; /* Поля вокруг текста */
+
+
+}
+
+.cell {
+    border: 1px solid #ebebeb;
+    text-align: left;
+    font-size:14px;
+    padding-left: 5px;
+}
+
+
+th:first-child {
+    border-top-left-radius: 12px;
+}
+
+th:last-child {
+    border-top-right-radius: 12px;
+    border-right: none;
+}
+
+.table_footer {
+    padding-top: 18px;
+    padding-left: 12px;
+}

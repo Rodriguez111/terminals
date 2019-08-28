@@ -1,0 +1,41 @@
+.page_frame {
+    position: relative;
+    width: 840px;
+    height: 1190px;
+    margin: auto;
+    border: #AFAFAF thin dashed;
+    margin-top: 45px;
+    margin-bottom: 48px;
+
+}
+
+.barcode_table {
+    position: relative;
+    border: #AFAFAF thin solid; /* Параметры рамки */
+    border-collapse: collapse; /*Убираем двойные линии между ячейками*/
+    max-width:  100%;
+    margin-left: 10px;
+    margin-top: 10px;
+
+}
+
+.barcode_row {
+    height: 80px;
+
+}
+
+.barcode_cell {
+    width: 160px;
+    border: #AFAFAF thin solid; /* Параметры рамки */
+    font-family: Arial;
+    font-size: 26px;
+    font-weight: bold;
+    vertical-align: bottom;
+    text-align: center;
+}
+
+.back_button {
+    position: fixed;
+    left: 100px;
+    top: 10px;
+}
