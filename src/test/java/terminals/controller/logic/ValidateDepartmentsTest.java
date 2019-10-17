@@ -53,7 +53,6 @@ public class ValidateDepartmentsTest {
         List<String> expected = new ArrayList<>();
         expected.add("NewTestDepartment1");
         expected.add("NewTestDepartment2");
-        expected.add("");
         List<String> actual = validateDepartments.findAllDepartments();
         assertThat(actual, is(expected));
     }

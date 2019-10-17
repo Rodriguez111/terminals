@@ -56,6 +56,26 @@ public class QueryManager {
         }
     }
 
+    public void runQueryWithException(String query, List<Object> params, Consumer<PreparedStatement> consumer) throws Exception {
+        try {
+            Statement statement = connection.createStatement();
+            statement.executeUpdate("PRAGMA foreign_keys = ON; ");
+            PreparedStatement ps = connection.prepareStatement(query);
+            for (int i = 0; i < params.size(); i++) {
+                dispatcher.get(params.get(i).getClass()).accept(i, ps, params.get(i));
+            }
+            consumer.accept(ps);
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    LOG.error(e.getMessage(), e);
+                }
+            }
+        }
+    }
+
     public <R> Optional<R> runQuery(String query, List<Object> params, Func<PreparedStatement, R> func) throws Exception {
         Optional<R> result = Optional.empty();
         try {

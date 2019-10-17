@@ -3,6 +3,7 @@
 <style>
     <%@include file="/resources/css/users/user_add.css" %>
 </style>
+<script src="resources/js/jquery-3.4.1.min.js"></script>
 
 <html>
 <head>
@@ -59,6 +60,59 @@
             return string.length >= 3 && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
         }
 
+
+        function sendAjaxRequest(dataToSend, callback) {
+            $.ajax('./json', {
+                method:'post',
+                data:dataToSend,
+                contentType:'text/json; charset=utf-8',
+                dataType:'json',
+                success:function (data) {
+                    callback(data);
+                }
+            })
+        }
+
+        function displayDepartmentsSelector(data) {
+            var listOfDepartments = data.listOfDeparts;
+            var selector = document.getElementById("departmentsSelector");
+            var options = document.createElement("option");
+            options.selected = true;
+            options.setAttribute("value", "");
+            options.innerHTML = "Не выбран";
+            selector.appendChild(options);
+            for (var i = 0; i < listOfDepartments.length; i++) {
+                options = document.createElement("option");
+                options.setAttribute("value", listOfDepartments[i]);
+                options.innerHTML = listOfDepartments[i];
+                selector.appendChild(options);
+            }
+        }
+
+        function getAndDisplayDepartments() {
+            sendAjaxRequest("getListOfDeparts", displayDepartmentsSelector);
+        }
+
+        function displayRolesSelector(data) {
+            var listOfRoles = data.listOfRoles;
+            var selector = document.getElementById("rolesSelector");
+            for (var i = 0; i < listOfRoles.length; i++) {
+                options = document.createElement("option");
+                options.setAttribute("value", listOfRoles[i]);
+                options.innerHTML = listOfRoles[i];
+                if (listOfRoles[i] === "user") {
+                    options.selected = true;
+                }
+                selector.appendChild(options);
+            }
+        }
+
+        function getAndDisplayRoles() {
+            sendAjaxRequest("getListOfRoles", displayRolesSelector);
+        }
+        getAndDisplayDepartments();
+        getAndDisplayRoles();
+
     </script>
 </head>
 <body>
@@ -93,21 +147,21 @@
             </tr>
             <tr>
                 <td class="cell">Роль:</td>
-                <td><select class="input" required name="role" form="addform">
-                    <option selected >user</option>
-                    <c:forEach items="${param.listOfRoles}" var="eachRole">
-                        <option value="${eachRole.replaceAll('^\\[|\\]$|\\s', '')}">${eachRole.replaceAll('^\\[|\\]$|\\s', '')}</option>
-                    </c:forEach>
+                <td><select id="rolesSelector" class="input" required name="role" form="addform">
+<%--                    <option selected >user</option>--%>
+<%--                    <c:forEach items="${param.listOfRoles}" var="eachRole">--%>
+<%--                        <option value="${eachRole.replaceAll('^\\[|\\]$|\\s', '')}">${eachRole.replaceAll('^\\[|\\]$|\\s', '')}</option>--%>
+<%--                    </c:forEach>--%>
                 </select></td>
             </tr>
 
             <tr>
                 <td class="cell">Департамент:</td>
-                <td><select class="input" name="department" form="addform">
-                    <option selected ></option>
-                    <c:forEach items="${param.listOfDeparts}" var="eachDepart">
-                        <option value="${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}">${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}</option>
-                    </c:forEach>
+                <td><select id="departmentsSelector" class="input" name="department" form="addform">
+<%--                    <option selected ></option>--%>
+<%--                    <c:forEach items="${param.listOfDeparts}" var="eachDepart">--%>
+<%--                        <option value="${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}">${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}</option>--%>
+<%--                    </c:forEach>--%>
                 </select></td>
             </tr>
 

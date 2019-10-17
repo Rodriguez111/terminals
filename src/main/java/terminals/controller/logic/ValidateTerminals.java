@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ValidateTerminals implements TerminalsValidator {
 
@@ -36,10 +37,26 @@ public class ValidateTerminals implements TerminalsValidator {
         listOfTerminals.sort(new Comparator<Terminal>() {
             @Override
             public int compare(Terminal o1, Terminal o2) {
-                return o1.getRegId().compareTo(o2.getRegId());
+                Integer first = 0;
+                Integer second = 0;
+                try{
+                    first = Integer.parseInt(o1.getRegId().substring(2));
+                    second = Integer.parseInt(o2.getRegId().substring(2));
+                } catch (NumberFormatException e) {
+                    LOG.error("Некорректный формат учетного номера терминала");
+                    e.printStackTrace();
+                }
+
+                return first.compareTo(second);
             }
         });
         return listOfTerminals;
+    }
+
+    @Override
+    public List<Terminal> findActiveTerminals() {
+        List<Terminal> listOfTerminals = findAllTerminals();
+        return listOfTerminals.stream().filter(Terminal::isTerminalIsActive).collect(Collectors.toList());
     }
 
     @Override
@@ -52,13 +69,14 @@ public class ValidateTerminals implements TerminalsValidator {
         LOG.info("Enter method");
         String resultMessage;
         String terminalRegId = request.getParameter("regId");
+        String terminalModel = request.getParameter("model");
         String terminalSerialId = request.getParameter("serialId");
         String terminalInventoryId = request.getParameter("inventoryId");
         String terminalComment = request.getParameter("comment").isEmpty() ? "" : request.getParameter("comment");
         String department = request.getParameter("department");
         boolean terminalIsActive = request.getParameter("isActive")!= null;
 
-        Terminal terminal = new Terminal(terminalRegId, terminalSerialId, terminalInventoryId, terminalComment, terminalIsActive, department);
+        Terminal terminal = new Terminal(terminalRegId, terminalModel, terminalSerialId, terminalInventoryId, terminalComment, terminalIsActive, department);
         if (department.equals("")) {
             resultMessage =  terminalStorage.addTerminal(terminal);
         } else {
@@ -108,6 +126,9 @@ public class ValidateTerminals implements TerminalsValidator {
         if(validateField(request.getParameter("regId"))) {
             updatedTerminal.setRegId(request.getParameter("regId"));
         }
+        if(validateField(request.getParameter("model"))) {
+            updatedTerminal.setTerminalModel(request.getParameter("model"));
+        }
         if(validateField(request.getParameter("serialId"))) {
             updatedTerminal.setSerialId(request.getParameter("serialId"));
         }
@@ -118,7 +139,7 @@ public class ValidateTerminals implements TerminalsValidator {
             updatedTerminal.setTerminalComment(request.getParameter("comment"));
         }
         if(request.getParameter("department") != null) {
-            updatedTerminal.setDepartmentName(request.getParameter("department"));
+           updatedTerminal.setDepartmentName(request.getParameter("department"));
         }
         updatedTerminal.setTerminalIsActive(request.getParameter("isActive") != null);
         LOG.info("Exit method");
@@ -130,4 +151,15 @@ public class ValidateTerminals implements TerminalsValidator {
         return value != null && !value.equals("");
     }
 
+    @Override
+    public int getCountOfAllTerminals() {
+        return terminalStorage.countOfTerminals(null);
+    }
+
+    @Override
+    public int getCountOfActiveTerminals() {
+        int inactive = terminalStorage.countOfTerminals("inactive");
+        int all = getCountOfAllTerminals();
+        return all - inactive;
+    }
 }

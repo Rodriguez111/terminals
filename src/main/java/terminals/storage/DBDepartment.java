@@ -4,6 +4,7 @@ import terminals.models.User;
 import terminals.sql.QueryManager;
 import terminals.sql.SQLManager;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -101,6 +102,27 @@ public class DBDepartment implements DepartmentStorage {
             e.printStackTrace();
         }
         return String.valueOf(result);
+    }
+
+    @Override
+    public String renameDepartment(int id, String newDepartment) {
+        QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
+        String query = "UPDATE departments "
+                + "SET department_name = ? "
+                + "WHERE  department_id = ?";
+        List<Object> params = new ArrayList<>();
+        params.add(newDepartment);
+        params.add(id);
+        String result = "OK";
+        try {
+            queryManager.runQueryWithException(query, params, PreparedStatement::executeUpdate);
+        } catch (Exception e) {
+            if (e.getMessage().contains("UNIQUE constraint failed: departments.department_name")) {
+                return "Такой департамент уже существует";
+            }
+            e.printStackTrace();
+        }
+        return result;
     }
 
     @Override

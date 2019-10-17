@@ -64,16 +64,16 @@ public class TerminalFakeDb implements TerminalStorage {
 
     @Override
     public String addTerminal(Terminal terminal) {
-        Terminal terminal1 = new Terminal(terminal.getRegId(), terminal.getSerialId(), terminal.getInventoryId(),
-                terminal.getTerminalComment(), terminal.isTerminalIsActive(), terminal.getDepartmentName(), "");
+        Terminal terminal1 = new Terminal(terminal.getRegId(), terminal.getTerminalModel(), terminal.getSerialId(), terminal.getInventoryId(),
+                terminal.getTerminalComment(), terminal.isTerminalIsActive(), terminal.getDepartmentName(), terminal.getUserLogin());
         terminals.put(COUNT.incrementAndGet(), terminal1);
         return "OK";
     }
 
     @Override
     public String addTerminalWithDepartment(Terminal terminal) {
-        Terminal terminal1 = new Terminal(terminal.getRegId(), terminal.getSerialId(), terminal.getInventoryId(),
-                terminal.getTerminalComment(), terminal.isTerminalIsActive(), terminal.getDepartmentName(), "");
+        Terminal terminal1 = new Terminal(terminal.getRegId(), terminal.getTerminalModel(), terminal.getSerialId(), terminal.getInventoryId(),
+                terminal.getTerminalComment(), terminal.isTerminalIsActive(), terminal.getDepartmentName(), terminal.getUserLogin());
         terminals.put(COUNT.incrementAndGet(), terminal1);
         return "OK";
     }

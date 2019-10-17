@@ -3,6 +3,7 @@
     padding: 1px; /* Поля вокруг текста */
     text-align: center;
     font-size:15px;
+    height: 30px;
 }
 
 .main_table {
@@ -35,6 +36,18 @@
     padding-left: 5px;
 }
 
+#regIdColumn {
+    width: 130px;
+}
+
+#updateColumn {
+    width: 120px;
+}
+
+#deleteColumn {
+    width: 90px;
+}
+
 .main_block {
     width: 100%;
     margin:auto;
@@ -58,12 +71,52 @@ th:last-child {
 
 #create_button {
     position: absolute;
+    top: 15px;
     left: 70px;
-
 }
 
 #generate_button {
     position: absolute ;
+    top: 15px;
     right: 70px;
-
 }
+
+.row:hover {
+    background-color: #abb5c0;
+}
+ #info_container {
+     position: relative;
+     margin: auto;
+     margin-top: -5px;
+     margin-bottom: 5px;
+     background: #b6b6b6;
+     height: 20px;
+     font-size: 15px;
+     font-weight: bold;
+     font-family: "Arial";
+ }
+
+ #countOfAllTerminals_container {
+     position: absolute;
+     top: 2px;
+     right: 180px;
+ }
+
+#countOfActiveTerminals_container {
+    position: absolute;
+    top: 2px;
+    right: 40px;
+}
+
+
+
+
+ .check_box_container {
+     position: absolute;
+     left: 40px;
+
+ }
+
+ #show_only_active {
+     margin-top: 3px;
+ }

@@ -3,6 +3,7 @@
 <style>
     <%@include file="/resources/css/terminals/terminal_update.css" %>
 </style>
+<script src="resources/js/jquery-3.4.1.min.js"></script>
 
 <html>
 <head>
@@ -16,6 +17,7 @@
             infoBlock.innerHTML = '';
             var form = document.getElementById("updateform");
             var regId = form.regId.value;
+            var model = form.model.value;
             var serialId = form.serialId.value;
             var inventoryId = form.inventoryId.value;
             var comment = form.comment.value;
@@ -23,6 +25,10 @@
             if (!validateLength(regId, 3, 10)) {
                 result = false;
                 infoBlock.innerHTML = '"Учетный номер" должен быть от 3 до 10 символов и не содержать пробелы, или оставьте пустым';
+            }
+            if (!validateLength(model, 3, 20)) {
+                result = false;
+                infoBlock.innerHTML = '"Модель" должна быть от 3 до 20 символов и не содержать пробелы, или оставьте пустым';
             }
             if (!validateLength(serialId, 3, 30)) {
                 result = false;
@@ -50,6 +56,80 @@
             return string.length == 0 || (string.length <= maxLength && !string.includes('  '));
         }
 
+
+
+
+        function sendAjaxRequest(dataToSend, callback) {
+            $.ajax('./json', {
+                method:'post',
+                data:dataToSend,
+                contentType:'text/json; charset=utf-8',
+                dataType:'json',
+                success:function (data) {
+                    callback(data);
+                }
+            })
+        }
+
+
+        function displayDepartmentsSelector(data) {
+            var listOfDepartments = data.listOfDeparts;
+            var selector = document.getElementById("departmentsSelector");
+            var options = document.createElement("option");
+            options.selected = true;
+            options.setAttribute("value", "");
+            options.innerHTML = "Не выбран";
+            selector.appendChild(options);
+
+            for (var i = 0; i < listOfDepartments.length; i++) {
+                options = document.createElement("option");
+                options.setAttribute("value", listOfDepartments[i]);
+                options.innerHTML = listOfDepartments[i];
+                selector.appendChild(options);
+            }
+        }
+
+        function displayTerminalInfo(data) {
+            var terminal = data;
+            var form = document.getElementById("updateform");
+            var regId = form.regId;
+            regId.setAttribute("placeholder", terminal.regId);
+            var model = form.model;
+            model.setAttribute("placeholder", terminal.terminalModel);
+            var serialId = form.serialId;
+            serialId.setAttribute("placeholder", terminal.serialId);
+            var inventoryId = form.inventoryId;
+            inventoryId.setAttribute("placeholder", terminal.inventoryId);
+            var comment = form.comment;
+            comment.setAttribute("placeholder", terminal.terminalComment);
+            var isActive = form.isActive;
+            isActive.checked  = terminal.terminalIsActive;
+            var selectorsOfDepartmentSelector = document.getElementsByTagName("option");
+            for (var i = 0; i < selectorsOfDepartmentSelector.length; i++) {
+                if(selectorsOfDepartmentSelector[i].value === terminal.departmentName) {
+                    selectorsOfDepartmentSelector[i].selected = true;
+                }
+            }
+
+        }
+
+        function getAndDisplayDepartments() {
+            sendAjaxRequest("getListOfDeparts", displayDepartmentsSelector);
+        }
+
+        function getAndDisplayTerminalInfo() {
+            var jsonObj = JSON.stringify({"getTerminalInfo":${param.id}});
+            sendAjaxRequest(jsonObj, displayTerminalInfo);
+        }
+
+        getAndDisplayDepartments();
+        getAndDisplayTerminalInfo();
+
+
+
+
+
+
     </script>
 
 </head>
@@ -64,28 +144,28 @@
         <table class="table">
             <tr>
                 <td class="cell">Учетный номер:</td>
-                <td><input class="input" type='text' name='regId' placeholder="${param.regId}"  AUTOCOMPLETE="off"/></td>
+                <td><input class="input" type='text' name='regId' AUTOCOMPLETE="off"/></td>
+            </tr>
+            <tr>
+                <td class="cell">Модель:</td>
+                <td><input class="input" type='text' name='model' AUTOCOMPLETE="off"/></td>
             </tr>
             <tr>
                 <td class="cell">Серийный номер:</td>
-                <td><input class="input" type='text' name='serialId' placeholder="${param.serialId}"  AUTOCOMPLETE="off"/></td>
+                <td><input class="input" type='text' name='serialId' AUTOCOMPLETE="off"/></td>
             </tr>
             <tr>
                 <td class="cell">Инв. номер:</td>
-                <td><input class="input" type='text' name='inventoryId' placeholder="${param.inventoryId}"  AUTOCOMPLETE="off"/></td>
+                <td><input class="input" type='text' name='inventoryId' AUTOCOMPLETE="off"/></td>
             </tr>
             <tr>
                 <td class="cell">Комментарий:</td>
                 <td><textarea name="comment" class="commentField" cols="32" rows="7"
-                              placeholder="${param.comment}"  AUTOCOMPLETE="off"></textarea></td>
+                               AUTOCOMPLETE="off" style="resize: none"></textarea></td>
             </tr>
             <tr>
                 <td class="cell">Департамент:</td>
-                <td><select class="input" name="department" form="updateform">
-                    <option selected>${param.department}</option>
-                    <c:forEach items="${param.listOfDeparts}" var="eachDepart">
-                        <option value="${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}">${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}</option>
-                    </c:forEach>
+                <td><select id="departmentsSelector" class="input" name="department" form="updateform">
                 </select></td>
             </tr>
             <tr>

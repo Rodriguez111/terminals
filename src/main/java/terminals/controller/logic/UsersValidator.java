@@ -11,6 +11,12 @@ public interface UsersValidator {
 
     List<User> findAllUsers();
 
+    List<User> findActiveUsers();
+
+    int getCountOfAllUsers();
+
+    int getCountOfActiveUsers();
+
     User findUserById(int id);
 
     String addUser(HttpServletRequest request);

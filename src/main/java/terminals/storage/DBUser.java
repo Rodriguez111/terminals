@@ -429,6 +429,42 @@ public class DBUser implements UserStorage {
         LOG.info("Exit method");
     }
 
+    /**
+     * Counts terminals amount
+     *
+     * @param whatToCount null - all users, "inactive" - only inactive users,
+     *                    "took" - only those who took the terminal.
+     * @return
+     */
+    @Override
+    public int countOfUsers(String whatToCount) {
+        LOG.info("Enter method");
+        int result = -1;
+        QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
+        String query = "SELECT COUNT(user_id) FROM users";
+        if (whatToCount != null && whatToCount.equals("inactive")) {
+            query = "SELECT COUNT(user_id) FROM users WHERE user_is_active = 0";
+        }
+        if (whatToCount != null && whatToCount.equals("took")) {
+            query = "SELECT COUNT(user_id) FROM users WHERE terminal_id IS NOT NULL";
+        }
+        List<Object> params = new ArrayList<>();
+        try {
+            result = queryManager.runQuery(query, params, ps -> {
+                int count = -1;
+                ResultSet resultSet = ps.executeQuery();
+                if (resultSet.next()) {
+                    count = resultSet.getInt("COUNT(user_id)");
+                }
+                return count;
+            }).orElse(-1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LOG.info("Exit method");
+        return result;
+    }
+
 
 
 }

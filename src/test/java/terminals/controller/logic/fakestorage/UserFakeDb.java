@@ -97,7 +97,7 @@ public class UserFakeDb implements UserStorage {
     @Override
     public String addUser(User user) {
         User user1 = new User(user.getUserLogin(), user.getUserPassword(), user.getUserName(), user.getUserSurname(),
-                user.getUserRole(), user.getUserDepartment(), "", user.isActive());
+                user.getUserRole(), user.getUserDepartment(), user.getTerminalRegId(), user.isActive());
         users.put(COUNT.incrementAndGet(), user1);
         return "OK";
     }
@@ -136,5 +136,10 @@ public class UserFakeDb implements UserStorage {
     @Override
     public void removeTerminalFromUser(int userId) {
 
+    }
+
+    @Override
+    public int countOfUsers(String whatToCount) {
+        return 0;
     }
 }

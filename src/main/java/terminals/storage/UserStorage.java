@@ -16,6 +16,9 @@ public interface UserStorage {
 
     int checkOneTerminalInOneHand(int userId);
 
+    int countOfUsers(String whatToCount);
+
+
     String findFieldById(int id, String fieldName, DataType dataType);
 
     String addUser(User user);

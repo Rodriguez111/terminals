@@ -10,6 +10,12 @@ public interface TerminalsValidator {
 
     List<Terminal> findAllTerminals();
 
+    List<Terminal> findActiveTerminals();
+
+    int getCountOfAllTerminals();
+
+    int getCountOfActiveTerminals();
+
     Terminal findTerminalById(int id);
 
     String addTerminal(HttpServletRequest request);

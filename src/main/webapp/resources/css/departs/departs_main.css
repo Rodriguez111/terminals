@@ -3,14 +3,17 @@
     padding: 1px; /* Поля вокруг текста */
     text-align: center;
     font-size:15px;
+    height: 30px;
 }
 
 .main_block {
     width: 100%;
     margin:0;
+
 }
 
 .main_table {
+    min-width: 650px;
     width: 50%;
     margin: auto;
     table-layout:auto; /*Ширина столбцов по содержимому*/
@@ -31,7 +34,7 @@
 
 }
 
-.cell {
+.cell, .department_name_cell {
     border: 1px solid #ebebeb;
     text-align: left;
     font-size:14px;
@@ -49,6 +52,58 @@ th:last-child {
 }
 
 .table_footer {
+    position: relative;
     padding-top: 18px;
     padding-left: 12px;
+}
+
+#updateColumn {
+    width: 130px;
+}
+
+#deleteColumn {
+    width: 100px;
+}
+
+.row:hover {
+    background-color: #abb5c0;
+}
+
+#update_container {
+    position: absolute;
+    top: 15px;
+    left: 110px;
+    width: 500px;
+    font-size: 14px;
+    font-weight: bold;
+    display: none;
+}
+
+#renameInput {
+    display: inline-block;
+    width: 200px;
+    height: 25px;
+}
+
+#okRenameButton {
+    display: inline-block;
+    width: 60px;
+}
+
+#cancelRenameButton {
+    display: inline-block;
+}
+
+#info_container {
+    /*position: absolute;*/
+    /*top: 15px;*/
+    /*left: 110px;*/
+    margin: auto;
+    margin-top: -7px;
+    width: 500px;
+    height: 25px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+    color: #c51a1a;
 }

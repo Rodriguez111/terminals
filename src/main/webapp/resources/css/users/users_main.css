@@ -3,6 +3,7 @@
     padding: 1px; /* Поля вокруг текста */
     text-align: center;
     font-size:15px;
+    height: 30px;
 }
 
 .main_table {
@@ -25,8 +26,6 @@
 .row {
     background: #c8d2dd; /* Цвет фона ячеек */
     padding: 5px; /* Поля вокруг текста */
-
-
 }
 
 .cell {
@@ -50,7 +49,62 @@ th:last-child {
     border-right: none;
 }
 
-.table_footer {
-    padding-top: 18px;
-    padding-left: 12px;
+#table_footer {
+    position: relative;
+    height: 50px;
+    /*padding-top: 18px;*/
+    padding-bottom: 25px;
+}
+
+#updateColumn {
+    width: 120px;
+}
+
+#deleteColumn {
+    width: 90px;
+}
+
+.row:hover {
+    background-color: #abb5c0;
+}
+
+#info_container {
+    position: relative;
+    margin: auto;
+    margin-top: -5px;
+    margin-bottom: 5px;
+    background: #b6b6b6;
+    height: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    font-family: "Arial";
+}
+
+#countOfAllUsers_container {
+    position: absolute;
+    top: 2px;
+    right: 180px;
+}
+
+#countOfActiveUsers_container {
+    position: absolute;
+    top: 2px;
+    right: 40px;
+}
+
+
+.check_box_container {
+    position: absolute;
+    left: 40px;
+
+}
+
+#show_only_active {
+    margin-top: 3px;
+}
+
+#create_button {
+    position: absolute;
+    top: 15px;
+    left: 70px;
 }

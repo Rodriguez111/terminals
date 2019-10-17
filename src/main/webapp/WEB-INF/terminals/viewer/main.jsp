@@ -15,7 +15,7 @@
 
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="active_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="common_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>

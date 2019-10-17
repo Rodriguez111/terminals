@@ -11,5 +11,7 @@ public interface DepartmentsValidator {
 
     String addDepartment(HttpServletRequest request);
 
+    String renameDepartment(String oldDepName, String newDepName);
+
     String deleteDepartment(HttpServletRequest request);
 }

@@ -13,5 +13,7 @@ public interface DepartmentStorage {
 
     String addDepartment(String department);
 
+    String renameDepartment(int id, String newDepartment);
+
     String deleteDepartment(String department);
 }

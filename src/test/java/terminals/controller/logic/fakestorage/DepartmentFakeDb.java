@@ -41,6 +41,11 @@ public class DepartmentFakeDb implements DepartmentStorage {
     }
 
     @Override
+    public String renameDepartment(int id, String newDepartment) {
+        return null;
+    }
+
+    @Override
     public String deleteDepartment(String department) {
         this.departments.remove(department);
         return "OK";

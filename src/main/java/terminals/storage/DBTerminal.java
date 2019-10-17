@@ -75,6 +75,7 @@ public class DBTerminal implements TerminalStorage {
     private Terminal composeTerminalFromDBResultSet(ResultSet resultSet) throws SQLException {
         int id = resultSet.getInt("terminal_id");
         String regId = resultSet.getString("terminal_reg_id");
+        String terminalModel = resultSet.getString("terminal_model");
         String serialId = resultSet.getString("terminal_serial_id");
         String invId = resultSet.getString("terminal_inventory_id");
         String terminalComment = resultSet.getString("terminal_comment");
@@ -83,7 +84,7 @@ public class DBTerminal implements TerminalStorage {
         boolean isActive = resultSet.getBoolean("terminal_is_active");
         String createDate = formatDate(resultSet.getString("terminal_create_date"));
         String updateDate = formatDate(resultSet.getString("terminal_update_date"));
-        Terminal terminal = new Terminal(regId, serialId, invId, terminalComment, isActive, department, userLogin);
+        Terminal terminal = new Terminal(regId, terminalModel, serialId, invId, terminalComment, isActive, department, userLogin);
         terminal.setId(id);
         terminal.setCreateDate(createDate);
         terminal.setLastUpdateDate(updateDate);
@@ -151,15 +152,17 @@ public class DBTerminal implements TerminalStorage {
         LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO terminals "
-                + "(terminal_reg_id, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active)"
-                + "VALUES (?, ?, ?, ?, ?);";
+                + "(terminal_reg_id, terminal_model, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active)"
+                + "VALUES (?, ?, ?, ?, ?, ?);";
         String regId = terminal.getRegId();
+        String terminalModel = terminal.getTerminalModel();
         String serialId = terminal.getSerialId();
         String invId = terminal.getInventoryId();
         String comment = terminal.getTerminalComment();
         boolean isActive = terminal.isTerminalIsActive();
         List<Object> params = new ArrayList<>();
         params.add(regId);
+        params.add(terminalModel);
         params.add(serialId);
         params.add(invId);
         params.add(comment);
@@ -187,10 +190,11 @@ public class DBTerminal implements TerminalStorage {
         LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO terminals "
-                + "(terminal_reg_id, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active, " +
+                + "(terminal_reg_id, terminal_model, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active, " +
                 "terminal_department_id) "
-                + "VALUES (?, ?, ?, ?, ?, ?);";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?);";
         String regId = terminal.getRegId();
+        String terminalModel = terminal.getTerminalModel();
         String serialId = terminal.getSerialId();
         String invId = terminal.getInventoryId();
         String comment = terminal.getTerminalComment();
@@ -198,6 +202,7 @@ public class DBTerminal implements TerminalStorage {
         int departmentId = DEPARTMENTS.findIdByDepartment(terminal.getDepartmentName());
         List<Object> params = new ArrayList<>();
         params.add(regId);
+        params.add(terminalModel);
         params.add(serialId);
         params.add(invId);
         params.add(comment);
@@ -223,10 +228,11 @@ public class DBTerminal implements TerminalStorage {
         String result = "OK";
         LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
-        String query = "UPDATE terminals SET terminal_reg_id=?, terminal_serial_id=?, terminal_inventory_id=?," +
+        String query = "UPDATE terminals SET terminal_reg_id=?, terminal_model=?, terminal_serial_id=?, terminal_inventory_id=?," +
                 " terminal_comment=?, terminal_is_active=?, terminal_department_id=null, " +
                 "terminal_update_date = datetime(CURRENT_TIMESTAMP, 'localtime')  WHERE terminal_id=?";
         String regId = terminal.getRegId();
+        String terminalModel = terminal.getTerminalModel();
         String serialId = terminal.getSerialId();
         String invId = terminal.getInventoryId();
         String comment = terminal.getTerminalComment();
@@ -234,6 +240,7 @@ public class DBTerminal implements TerminalStorage {
         int id = terminal.getId();
         List<Object> params = new ArrayList<>();
         params.add(regId);
+        params.add(terminalModel);
         params.add(serialId);
         params.add(invId);
         params.add(comment);
@@ -273,10 +280,11 @@ public class DBTerminal implements TerminalStorage {
         String result = "OK";
         LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
-        String query = "UPDATE terminals SET terminal_reg_id=?, terminal_serial_id=?, terminal_inventory_id=?, " +
+        String query = "UPDATE terminals SET terminal_reg_id=?, terminal_model=?, terminal_serial_id=?, terminal_inventory_id=?, " +
                 "terminal_comment=?, terminal_is_active=?, terminal_department_id=?, " +
                 "terminal_update_date = datetime(CURRENT_TIMESTAMP, 'localtime')  WHERE terminal_id=?";
         String regId = terminal.getRegId();
+        String terminalModel = terminal.getTerminalModel();
         String serialId = terminal.getSerialId();
         String invId = terminal.getInventoryId();
         String comment = terminal.getTerminalComment();
@@ -285,6 +293,7 @@ public class DBTerminal implements TerminalStorage {
         int id = terminal.getId();
         List<Object> params = new ArrayList<>();
         params.add(regId);
+        params.add(terminalModel);
         params.add(serialId);
         params.add(invId);
         params.add(comment);

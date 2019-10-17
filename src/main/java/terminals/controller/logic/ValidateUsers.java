@@ -2,12 +2,15 @@ package terminals.controller.logic;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import terminals.models.Terminal;
 import terminals.models.User;
 import terminals.storage.DBUser;
 import terminals.storage.UserStorage;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ValidateUsers implements UsersValidator {
@@ -49,9 +52,38 @@ public class ValidateUsers implements UsersValidator {
 
     @Override
     public List<User> findAllUsers() {
-        return userStorage.findAllUsers();
+        List<User> listOfUsers = userStorage.findAllUsers();
+        listOfUsers.sort(new Comparator<User>() {
+            @Override
+            public int compare(User o1, User o2) {
+                int result = 0;
+                result = o1.getUserSurname().compareTo(o2.getUserSurname());
+                if (result == 0) {
+                    result = o1.getUserName().compareTo(o2.getUserName());
+                }
+                return result;
+            }
+        });
+        return listOfUsers;
     }
 
+    @Override
+    public List<User> findActiveUsers() {
+        List<User> listOfUsers = findAllUsers();
+        return listOfUsers.stream().filter(User::isActive).collect(Collectors.toList());
+    }
+
+    @Override
+    public int getCountOfAllUsers() {
+        return userStorage.countOfUsers(null);
+    }
+
+    @Override
+    public int getCountOfActiveUsers() {
+        int inactive = userStorage.countOfUsers("inactive");
+        int all = getCountOfAllUsers();
+        return all - inactive;
+    }
 
     @Override
     public User findUserById(int id) {
@@ -132,7 +164,7 @@ public class ValidateUsers implements UsersValidator {
             updatedUser.setUserRole(request.getParameter("role"));
         }
         if(request.getParameter("department") != null) {
-            updatedUser.setUserDepartment(request.getParameter("department"));
+             updatedUser.setUserDepartment(request.getParameter("department"));
         }
         updatedUser.setActive(request.getParameter("isActive") != null);
         LOG.info("Exit method");

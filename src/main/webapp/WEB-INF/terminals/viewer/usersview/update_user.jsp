@@ -3,6 +3,7 @@
 <style>
     <%@include file="/resources/css/users/user_update.css" %>
 </style>
+<script src="resources/js/jquery-3.4.1.min.js"></script>
 
 <html>
 <head>
@@ -51,6 +52,110 @@
             return string.length == 0 || (string.length >= 3 && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t'));
         }
 
+
+        function sendAjaxRequest(dataToSend, callback) {
+            $.ajax('./json', {
+                method:'post',
+                data:dataToSend,
+                contentType:'text/json; charset=utf-8',
+                dataType:'json',
+                success:function (data) {
+                    callback(data);
+                }
+            })
+        }
+
+        function displayDepartmentsSelector(data) {
+            var listOfDepartments = data.listOfDeparts;
+            var selector = document.getElementById("departmentsSelector");
+            var options = document.createElement("option");
+            options.selected = true;
+            options.setAttribute("value", "");
+            options.innerHTML = "Не выбран";
+            selector.appendChild(options);
+            for (var i = 0; i < listOfDepartments.length; i++) {
+                options = document.createElement("option");
+                options.setAttribute("value", listOfDepartments[i]);
+                options.innerHTML = listOfDepartments[i];
+                selector.appendChild(options);
+            }
+        }
+
+        function getAndDisplayDepartments() {
+            sendAjaxRequest("getListOfDeparts", displayDepartmentsSelector);
+        }
+
+        function displayRolesSelector(data) {
+            var listOfRoles = data.listOfRoles;
+            var selector = document.getElementById("rolesSelector");
+            for (var i = 0; i < listOfRoles.length; i++) {
+                options = document.createElement("option");
+                options.setAttribute("value", listOfRoles[i]);
+                options.innerHTML = listOfRoles[i];
+                selector.appendChild(options);
+            }
+        }
+
+        function getAndDisplayRoles() {
+            sendAjaxRequest("getListOfRoles", displayRolesSelector);
+        }
+
+        function displayUserInfo(data) {
+            var user = data;
+            var form = document.getElementById("updateform");
+            var login = form.login;
+            login.setAttribute("placeholder", user.userLogin);
+            if(user.userLogin === "root") {
+               login.setAttribute("disabled", true);
+            }
+            var name = form.name;
+            name.setAttribute("placeholder", user.userName);
+            var surname = form.surname;
+            surname.setAttribute("placeholder", user.userSurname);
+            var isActive = form.isActive;
+            isActive.checked  = user.active;
+            if (user.userLogin === 'root') {
+                isActive.disabled  = true;
+            }
+
+            var selectorsOfDepartmentSelector = document.getElementById("departmentsSelector")
+                .getElementsByTagName("option");
+            for (var i = 0; i < selectorsOfDepartmentSelector.length; i++) {
+                if(selectorsOfDepartmentSelector[i].value === user.userDepartment) {
+                    selectorsOfDepartmentSelector[i].selected = true;
+                }
+            }
+
+            var selectorsOfRoleSelector = document.getElementById("rolesSelector")
+                .getElementsByTagName("option");
+
+            if (user.userLogin === 'root') {
+                var roleSelector = document.getElementById("rolesSelector");
+                roleSelector.disabled = true;
+                var option = document.createElement("option");
+                option.setAttribute("value", "root");
+                option.setAttribute("selected", true);
+                option.innerHTML = "root";
+                roleSelector.appendChild(option);
+            } else {
+                for (var i = 0; i < selectorsOfRoleSelector.length; i++) {
+                    if(selectorsOfRoleSelector[i].value === user.userRole) {
+                        selectorsOfRoleSelector[i].selected = true;
+                    }
+                }
+            }
+        }
+
+        function getAndDisplayUserInfo() {
+            var jsonObj = JSON.stringify({"getUserInfo":${param.id}});
+            sendAjaxRequest(jsonObj, displayUserInfo);
+        }
+
+        getAndDisplayDepartments();
+        getAndDisplayRoles();
+        getAndDisplayUserInfo();
+
+
     </script>
 
 </head>
@@ -87,22 +192,13 @@
             </tr>
             <tr>
                 <td class="cell">Роль:</td>
-                <td><select class="input" name="role" form="updateform" <c:if test="${param.role == 'root'}">disabled</c:if>>
-                    <option selected>${param.role}</option>
-                    <c:forEach items="${param.listOfRoles}" var="eachRole">
-                        <option value="${eachRole.replaceAll('^\\[|\\]$|\\s', '')}">${eachRole.replaceAll('^\\[|\\]$|\\s', '')}</option>
-                    </c:forEach>
-
+                <td><select id="rolesSelector" class="input" name="role" form="updateform" <c:if test="${param.role == 'root'}">disabled</c:if>>
                 </select></td>
             </tr>
 
             <tr>
                 <td class="cell">Департамент:</td>
-                <td><select class="input" name="department" form="updateform">
-                    <option selected>${param.department}</option>
-                    <c:forEach items="${param.listOfDeparts}" var="eachDepart">
-                        <option value="${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}">${eachDepart.replaceAll('^\\[|\\]$|\\s', '')}</option>
-                    </c:forEach>
+                <td><select id="departmentsSelector" class="input" name="department" form="updateform">
                 </select></td>
             </tr>
 
@@ -128,9 +224,7 @@
         <c:if test="${sysMessage != ''}">${sysMessage}</c:if>
     </div>
 
-
 </div>
-
 
 </body>
 </html>

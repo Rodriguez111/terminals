@@ -124,6 +124,10 @@
         <servlet-name>GeneratePhoto</servlet-name>
         <servlet-class>terminals.controller.servlets.registrations.GeneratePhoto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>JsonServlet</servlet-name>
+        <servlet-class>terminals.controller.servlets.JsonServlet</servlet-class>
+    </servlet>
 
 
 
@@ -225,6 +229,10 @@
     <servlet-mapping>
         <servlet-name>GeneratePhoto</servlet-name>
         <url-pattern>/generatephoto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>JsonServlet</servlet-name>
+        <url-pattern>/json</url-pattern>
     </servlet-mapping>
 
 

@@ -165,3 +165,7 @@ th:last-child {
     padding-top: 18px;
     padding-left: 12px;
 }
+
+.row:hover {
+    background-color: #abb5c0;
+}

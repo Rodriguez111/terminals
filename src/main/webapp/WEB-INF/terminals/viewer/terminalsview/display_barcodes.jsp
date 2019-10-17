@@ -3,7 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <style>
     <%@include file="/resources/css/terminals/display_barcodes.css" %>
-    <%@include file="/resources/css/terminals/no_ptint.css" %>
+    <%@include file="/resources/css/terminals/no_print.css" %>
 </style>
 
 

@@ -17,9 +17,9 @@
             if (department == '') {
                 result = false;
                 infoBlock.innerHTML = 'Название не может быть пустым';
-            } else if (!validateLength(department, 3, 60)) {
+            } else if (!validateLength(department, 3, 30)) {
                 result = false;
-                infoBlock.innerHTML = 'Название должно быть от 3 до 60 символов и не содержать пробелы';
+                infoBlock.innerHTML = 'Название должно быть от 3 до 30 символов и не содержать пробелы';
             }
             if (result) {
                 form.submit();

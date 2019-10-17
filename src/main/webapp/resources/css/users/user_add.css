@@ -1,7 +1,7 @@
 .user_info {
     position: relative;
     width: 400px;
-    height: 420px;
+    height: 450px;
     top: 5%;
     left: 50%;
     margin: 0 0 0 -200px;
@@ -60,5 +60,7 @@
     height: 30px;
     color:#FF3366;
     font-family: "Trebuchet MS", "Lucida Sans";
+    font-size: 14px;
     font-weight:bold;
+
 }

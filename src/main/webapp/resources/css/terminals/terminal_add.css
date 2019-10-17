@@ -1,7 +1,7 @@
 .terminal_info {
     position: relative;
     width: 400px;
-    height: 440px;
+    height: 480px;
     top: 5%;
     left: 50%;
     margin: 0 0 0 -200px;
@@ -65,4 +65,5 @@
     color:#FF3366;
     font-family: "Trebuchet MS", "Lucida Sans";
     font-weight:bold;
+    font-size: 14px;
 }

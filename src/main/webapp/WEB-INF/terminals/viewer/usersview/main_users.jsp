@@ -4,6 +4,7 @@
 <style><%@include file="/resources/css/users/users_main.css" %></style>
 <style><%@include file="/resources/css/users/users_delete_popup.css" %></style>
 <style><%@include file="/resources/css/users/users_error_popup.css" %></style>
+<script src="resources/js/jquery-3.4.1.min.js"></script>
 <html>
 <head>
     <link rel="shortcut icon" type="image/png" href="${pageContext.servletContext.contextPath}/resources/png/icon.png"/>
@@ -12,7 +13,7 @@
 <body>
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="common_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="active_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>
@@ -32,85 +33,20 @@
     <hr>
 </div>
 
+<input type="hidden" id="roleOfLoggedInUser" name="role" value="${role}"/>
+
+<div id="info_container">
+    <div class="check_box_container">
+        <label for="show_only_active">Только активные</label>    <input id="show_only_active" type="checkbox">
+    </div>
+    <div id="countOfAllUsers_container">
+    </div>
+    <div id="countOfActiveUsers_container">
+    </div>
+</div>
+
 <div class="main_block">
-    <table class="main_table">
-        <tr class="table_header">
-            <th>Логин</th>
-            <th>Имя</th>
-            <th>Фамилия</th>
-            <th>Роль</th>
-            <th>Департамент</th>
-            <th>Выдан терминал</th>
-            <th>Активен</th>
-            <th>Дата создания</th>
-            <th>Дата изменения</th>
-            <th>Обновить профиль</th>
-            <th>Удалить профиль</th>
-        </tr>
-
-        <c:forEach items="${listOfUsers}" var="eachUser">
-            <tr class='row'>
-                <td class='cell'>${eachUser.userLogin}</td>
-                <td class='cell'>${eachUser.userName}</td>
-                <td class='cell'>${eachUser.userSurname}</td>
-                <td class='cell'>${eachUser.userRole}</td>
-                <td class='cell'>${eachUser.userDepartment}</td>
-                <td class='cell'>${eachUser.terminalRegId}</td>
-                <td class='cell'>${eachUser.active == true? 'Да' : 'Нет'}</td>
-                <td class='cell'>${eachUser.createDate}</td>
-                <td class='cell'>${eachUser.lastUpdateDate}</td>
-
-                <td class='cell'>
-                    <c:if test="${eachUser.userRole != 'root' || role == 'root'}">
-
-                    <form class="forms" method='post'
-                          action="${pageContext.servletContext.contextPath}/selector">
-                        <input type='hidden' name='id' value='${eachUser.id}'/>
-                        <input type='hidden' name='login' value='${eachUser.userLogin}'/>
-                        <input type='hidden' name='name' value='${eachUser.userName}'/>
-                        <input type='hidden' name='surname' value='${eachUser.userSurname}'/>
-                        <input type='hidden' name='role' value='${eachUser.userRole}'/>
-                        <input type='hidden' name='department' value='${eachUser.userDepartment}'/>
-                        <input type='hidden' name='isActive' value='${eachUser.active}'/>
-                        <input type='hidden' name='listOfDeparts' value='${listOfDeparts}'/>
-                        <input type='hidden' name='listOfRoles' value='${listOfRoles}'/>
-                        <input type='hidden' name='action' value='update_user'/>
-                        <input type='submit' value='Изменить'>
-                    </form>
-                    </c:if>
-                </td>
-
-
-                <td class='cell'>
-
-                    <c:if test="${eachUser.userRole != 'root'}">
-                        <form class="delete_forms" method='post' action="${pageContext.servletContext.contextPath}/deleteuser" >
-                            <input type='hidden' name='id' value='${eachUser.id}'/>
-                            <input type='hidden' name='terminalRegId' value='${eachUser.terminalRegId}'/>
-                            <input type='hidden' name='loginToDelete' class="userToDelete" value='${eachUser.userLogin}'/>
-                            <input type='hidden' name='action' value='delete_user'/>
-                        </form>
-                        <button class="deleteBtn" onclick="modalWin(this)">Удалить</button>
-                    </c:if>
-                </td>
-
-            </tr>
-
-        </c:forEach>
-
-        <tr>
-            <td class="table_footer">
-
-                <form method='post' action="${pageContext.servletContext.contextPath}/selector">
-                    <input type='hidden' name='action' value='add_user'/>
-                    <input type='hidden' name='listOfDeparts' value='${listOfDeparts}'/>
-                    <input type='hidden' name='listOfRoles' value='${listOfRoles}'/>
-                    <input type='submit' value='Создать'>
-                </form>
-
-            </td>
-        </tr>
-
+    <table id="main_table" class="main_table">
     </table>
 </div>
 
@@ -149,11 +85,19 @@
 
 
 <script>
-    var button = document.querySelectorAll('.deleteBtn'); //получаем массив классов deleteBtn (кнопки Удалить)
-    var form = document.querySelectorAll('.delete_forms'); //получаем массив классов delete_forms (кнопки форма удаления)
-    for (var i = 0; i < button.length; i++) { //в цикле создаем прослушиватель события для каждой кнопки
-        addListener(button[i])
+
+    function prepareForModal() {
+        elements = document.querySelectorAll('.userToDelete');
+        button = document.querySelectorAll('.deleteBtn'); //получаем массив классов deleteBtn (кнопки Удалить)
+        form = document.querySelectorAll('.delete_forms'); //получаем массив классов delete_forms (кнопки форма удаления)
+        for (var i = 0; i < button.length; i++) { //в цикле создаем прослушиватель события для каждой кнопки
+            addListener(button[i])
+        }
     }
+    var elements;
+    var button;
+    var form;
+
 
     function addListener(button) { //функция, вешающая прослушиватель на переданный в нее элемент
         button.addEventListener('click', function () {
@@ -166,7 +110,7 @@
 
     var okModalBtn = document.querySelector('.ok');
     var cancelModalBtn = document.querySelector('.cancel');
-    var elements = document.querySelectorAll('.userToDelete')
+
 
     closeBtn.addEventListener('click', function () { //При нажатии Крестик убираем модальное окно.
         modal.style.display = 'none';
@@ -218,6 +162,139 @@
     </script>
     <% session.removeAttribute("sysMessage"); %>
 </c:if>
+
+
+<script>
+    window.onload = function () {
+
+        showActiveUsers();
+        checkBox.checked = true;
+    };
+
+    var roleOfLoggedInUser = document.getElementById("roleOfLoggedInUser").value;
+
+    var checkBox = document.getElementById("show_only_active");
+
+    checkBox.addEventListener('change', function () {
+        if(this.checked) {
+            showActiveUsers();
+        } else {
+            showAllUsers();
+        }
+    });
+
+
+    function showAllUsers() {
+        sendAjaxRequest("getAllUsers", getUsers);
+    }
+
+    function showActiveUsers() {
+        sendAjaxRequest("getActiveUsers", getUsers);
+    }
+
+    function getCountOfAllUsers() {
+        sendAjaxRequest("getCountOfAllUsers", showCountOfAllUsers);
+    }
+
+    function getCountOfActiveUsers() {
+        sendAjaxRequest("getCountOfActiveUsers", showCountOfActiveUsers);
+    }
+
+    function showCountOfAllUsers(data) {
+        document.getElementById("countOfAllUsers_container").innerHTML = "Всего: " + data.countOfAllUsers;
+    }
+
+    function showCountOfActiveUsers(data) {
+        document.getElementById("countOfActiveUsers_container").innerHTML = "Активных: " + data.countOfActiveUsers;
+    }
+
+
+
+    function getUsers(data) {
+        getCountOfAllUsers();
+        getCountOfActiveUsers();
+
+        var mainTable = document.getElementById("main_table");
+        var table = "<tr class=\"table_header\">\n" +
+            "<th id=\"regIdColumn\">Логин</th>\n" +
+            "<th>Фамилия</th>\n" +
+            "<th>Имя</th>\n" +
+            "<th>Роль</th>\n" +
+            "<th>Департамент</th>\n" +
+            "<th>Выдан терминал</th>\n" +
+            "<th>Активен</th>\n" +
+            "<th>Дата создания</th>\n" +
+            "<th>Дата изменения</th>\n" +
+         "<th id=\"updateColumn\">Редактировать</th>\n" +
+                "<th id=\"deleteColumn\">Удалить</th>";
+
+        table += " </tr>";
+        var listOfUsers = data.listOfUsers;
+        for(var i = 0; i < listOfUsers.length; i++) {
+            var active = listOfUsers[i].active ? "Да" : "Нет";
+
+            table += "<tr class='row'><td class='cell'>" + listOfUsers[i].userLogin + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].userSurname + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].userName + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].userRole + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].userDepartment + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].terminalRegId + "</td>"
+                +"<td class='cell'>" + active + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].createDate + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].lastUpdateDate + "</td>";
+
+            table += "<td class='cell' style=\"text-align: center\">";
+                if(listOfUsers[i].userRole !== 'root' || roleOfLoggedInUser === 'root') {
+
+                    table += "<form class='forms' method='post' action='${pageContext.servletContext.contextPath}/selector'>"
+                        + "<input type='hidden' name='id' value='" + listOfUsers[i].id + "'/>"
+                        + "<input type='hidden' name='action' value='update_user'/>"
+                        + "<input type='submit' value='Изменить'>"
+                        + "</form>";
+                }
+
+            table += "</td>";
+
+            table += "<td class='cell' style='text-align: center'>";
+            if(listOfUsers[i].userRole !== 'root' ) {
+            table += "<form class='delete_forms' method='post' action='${pageContext.servletContext.contextPath}/deleteuser' >"
+            + "<input type='hidden' name='id' value='" + listOfUsers[i].id + "'/>"
+            + "<input type='hidden' name='loginToDelete' class='userToDelete' value='" + listOfUsers[i].userLogin + "'/>"
+            + "<input type='hidden' name='action' value='delete_user'/>"
+            + "</form>"
+            + "<button class='deleteBtn' onclick='modalWin(this)'>Удалить</button>";
+
+            }
+            table += "</td>";
+
+            table += "</tr>";
+        }
+        table += "<tr>"
+            + "<td id='table_footer'  colspan='12'>"
+            + "<div id='create_button'>"
+            + "<form method='post' action='${pageContext.servletContext.contextPath}/selector'>"
+            + "<input type='hidden' name='action' value='add_user'/>"
+            + "<input type='submit' value='Создать'>"
+            + "</form></div>"
+            + "</td></tr>";
+        mainTable.innerHTML = table;
+        prepareForModal();
+    }
+
+
+    function sendAjaxRequest(dataToSend, callback) {
+        $.ajax('./json', {
+            method:'post',
+            data:dataToSend,
+            contentType:'text/json; charset=utf-8',
+            dataType:'json',
+            success:function (data) {
+                callback(data);
+            }
+        })
+    }
+
+</script>
 
 
 </body>

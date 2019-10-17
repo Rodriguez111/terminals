@@ -5,6 +5,7 @@ import java.util.Objects;
 public class Terminal implements Cloneable {
     private int id;
     private String regId;
+    private String terminalModel;
     private String serialId;
     private String inventoryId;
     private String terminalComment;
@@ -14,9 +15,10 @@ public class Terminal implements Cloneable {
     private String createDate;
     private String lastUpdateDate;
 
-    public Terminal(String regId, String serialId, String inventoryId, String terminalComment, boolean terminalIsActive,
+    public Terminal(String regId, String terminalModel, String serialId, String inventoryId, String terminalComment, boolean terminalIsActive,
                     String departmentName, String userLogin) {
         this.regId = regId;
+        this.terminalModel = terminalModel;
         this.serialId = serialId;
         this.inventoryId = inventoryId;
         this.terminalComment = terminalComment;
@@ -25,9 +27,10 @@ public class Terminal implements Cloneable {
         this.userLogin = userLogin;
     }
 
-    public Terminal(String regId, String serialId, String inventoryId, String terminalComment, boolean terminalIsActive,
+    public Terminal(String regId, String terminalModel, String serialId, String inventoryId, String terminalComment, boolean terminalIsActive,
                     String departmentName) {
         this.regId = regId;
+        this.terminalModel = terminalModel;
         this.serialId = serialId;
         this.inventoryId = inventoryId;
         this.terminalComment = terminalComment;
@@ -111,6 +114,14 @@ public class Terminal implements Cloneable {
         return userLogin;
     }
 
+    public String getTerminalModel() {
+        return terminalModel;
+    }
+
+    public void setTerminalModel(String terminalModel) {
+        this.terminalModel = terminalModel;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,6 +129,7 @@ public class Terminal implements Cloneable {
         Terminal terminal = (Terminal) o;
         return terminalIsActive == terminal.terminalIsActive &&
                 regId.equals(terminal.regId) &&
+                terminalModel.equals(terminal.terminalModel) &&
                 serialId.equals(terminal.serialId) &&
                 inventoryId.equals(terminal.inventoryId) &&
                 Objects.equals(terminalComment, terminal.terminalComment) &&
@@ -126,7 +138,7 @@ public class Terminal implements Cloneable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(regId, serialId, inventoryId, terminalComment, terminalIsActive, departmentName);
+        return Objects.hash(regId, terminalModel, serialId, inventoryId, terminalComment, terminalIsActive, departmentName);
     }
 
     @Override

@@ -4,6 +4,7 @@
 <style><%@include file="/resources/css/departs/departs_main.css" %></style>
 <style><%@include file="/resources/css/departs/delete_popup.css" %></style>
 <style><%@include file="/resources/css/departs/depart_error_popup.css" %></style>
+<script src="resources/js/jquery-3.4.1.min.js"></script>
 <html>
 <head>
     <link rel="shortcut icon" type="image/png" href="${pageContext.servletContext.contextPath}/resources/png/icon.png"/>
@@ -15,7 +16,7 @@
 
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="common_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="common_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>
@@ -41,23 +42,25 @@
     <table class="main_table">
         <tr class="table_header">
             <th>Название департамента</th>
-            <th>Удалить</th>
+            <th id="updateColumn">Редактировать</th>
+            <th id="deleteColumn">Удалить</th>
 
         </tr>
 
         <c:forEach items="${listOfDepartments}" var="eachDepartment">
             <tr class='row'>
-                <td class='cell'>${eachDepartment}</td>
+                <td class='department_name_cell'>${eachDepartment}</td>
+                <td class='cell' style="text-align: center">
+                    <button class="updateBtn" onclick="update(this)">Переименовать</button>
+                </td>
 
-                <td class='cell'>
-
+                <td class='cell' style="text-align: center">
                     <form class="delete_forms" method='post'
                           action="${pageContext.servletContext.contextPath}/deletedepart">
                         <input type='hidden' name='department' class="departmentToDelete" value='${eachDepartment}'/>
                         <input type='hidden' name='action' value='delete_depart'/>
                     </form>
                     <button class="deleteBtn" onclick="modalWin(this)">Удалить</button>
-
                 </td>
 
             </tr>
@@ -65,13 +68,20 @@
         </c:forEach>
 
         <tr>
-            <td class="table_footer">
-
+            <td id="table_footer" class="table_footer">
                 <form method='post' action="${pageContext.servletContext.contextPath}/selector">
                     <input type='hidden' name='action' value='add_depart'/>
                     <input type='submit' value='Создать'>
                 </form>
 
+                <div id="update_container">
+                    Новое название:
+                    <input id="renameInput" type="text"/>
+                    <button id="okRenameButton" >Ok</button>
+                    <button id="cancelRenameButton">Отменить</button>
+                </div>
+                <div id="info_container">
+                </div>
             </td>
         </tr>
 
@@ -111,6 +121,138 @@
 </div>
 
 
+
+
+<script>
+
+    var departToRename;
+    var cellWithDepartToUpdate;
+    var departNewName;
+    function update(element) {
+        clearSelection();
+        clearUpdateContainer();
+        showRenameDialog(element);
+      departToRename =  getDepartNameForRenaming(element);
+    }
+
+    function getDepartNameForRenaming(element) {
+       var arrayOfUpdateButtons = document.getElementsByClassName("updateBtn");
+       var counterOfButtons = 0;
+       for (var i = 0; i < arrayOfUpdateButtons.length; i++) {
+           if (element === arrayOfUpdateButtons[i]) {
+               counterOfButtons = i;
+               break;
+           }
+       }
+      var arrayOfDepartmentNameCells = document.getElementsByClassName("department_name_cell");
+      cellWithDepartToUpdate = arrayOfDepartmentNameCells[counterOfButtons];
+      return arrayOfDepartmentNameCells[counterOfButtons].innerHTML;
+    }
+
+
+    function showRenameDialog(element) {
+      var updateContainer = document.getElementById("update_container");
+      var row = element.parentElement.parentElement;
+      row.style.backgroundColor = "#abb5c0";
+      updateContainer.style.display = "block";
+      var inputField = document.getElementById("renameInput");
+      inputField.focus();
+    }
+
+    function clearSelection() {
+        var allRows = document.getElementsByClassName("row");
+        for (var i = 0; i < allRows.length; i++) {
+            allRows[i].style.backgroundColor = "";
+        }
+    }
+
+    function clearUpdateContainer() {
+        var inputField = document.getElementById("renameInput");
+        inputField.value = "";
+        var updateContainer = document.getElementById("update_container");
+        updateContainer.style.display = "none";
+        var infoContainer = document.getElementById("info_container");
+        infoContainer.innerHTML = "";
+    }
+
+
+   var cancelRenameButton = document.getElementById("cancelRenameButton");
+    cancelRenameButton.addEventListener("click", function () {
+        clearSelection();
+        clearUpdateContainer();
+
+    });
+
+    var okRenameButton = document.getElementById("okRenameButton");
+    okRenameButton.addEventListener("click", function () {
+        var newDepName = document.getElementById("renameInput").value;
+        if(validate(newDepName)) {
+            departNewName = newDepName;
+            renameDepartment();
+            clearUpdateContainer();
+        }
+    });
+
+
+
+    function sendAjaxRequest(dataToSend, callback) {
+        $.ajax('./json', {
+            method:'post',
+            data:dataToSend,
+            contentType:'text/json; charset=utf-8',
+            dataType:'json',
+            success:function (data) {
+                callback(data);
+            }
+        })
+    }
+
+
+    function renameDepartment() {
+        var jsonObj = JSON.stringify({"renameDepartment":departToRename, "newDepartmentName":departNewName});
+        sendAjaxRequest(jsonObj, displayNewDepartmentName)
+    }
+
+    function displayNewDepartmentName(data) {
+        var message = data.result;
+        var infoContainer = document.getElementById("info_container");
+        if(message !== "OK") {
+            infoContainer.innerHTML = message;
+            clearSelection();
+        }  else {
+            cellWithDepartToUpdate.innerHTML = departNewName;
+            clearUpdateContainer();
+            clearSelection();
+        }
+    }
+    
+    function validate(inputString) {
+        var infoContainer = document.getElementById("info_container");
+        var result = true;
+        if (inputString === '') {
+            result = false;
+            infoContainer.innerHTML = 'Название не может быть пустым';
+        } else if (!validateLength(inputString, 3, 30)) {
+            result = false;
+            infoContainer.innerHTML = 'Название должно быть от 3 до 30 символов и не содержать пробелы';
+        } else if (inputString === departToRename) {
+            result = false;
+            infoContainer.innerHTML = 'Это то же самое название';
+        }
+        return result;
+    }
+
+    function validateLength(string, minLength, maxLength) {
+        return string.length >= minLength && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
+    }
+
+        
+
+
+
+
+
+</script>
 
 
 

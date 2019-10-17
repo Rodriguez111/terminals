@@ -32,26 +32,26 @@ public class ValidateUsersTest {
     }
 
 
-    @Test
-    public void whenUpdateUserThenReturnOK() {
-        ValidateUsers validateUsers = ValidateUsers.getINSTANCE();
-        validateUsers.setUserStorage(new UserFakeDb());
-        HttpServletRequest req = mock(HttpServletRequest.class);
-        when(req.getParameter("login")).thenReturn("user01");
-        when(req.getParameter("password")).thenReturn("pass01");
-        when(req.getParameter("name")).thenReturn("userName");
-        when(req.getParameter("surname")).thenReturn("userSurname");
-        when(req.getParameter("role")).thenReturn("user");
-        when(req.getParameter("department")).thenReturn("dep1");
-        when(req.getParameter("isActive")).thenReturn("1");
-        validateUsers.addUser(req);
-        HttpServletRequest req2 = mock(HttpServletRequest.class);
-        when(req2.getParameter("id")).thenReturn("1");
-        when(req2.getParameter("name")).thenReturn("new-userName");
-        String actual = validateUsers.updateUser(req2);
-        String expected = "OK";
-        assertThat(actual, is(expected));
-    }
+//    @Test
+//    public void whenUpdateUserThenReturnOK() {
+//        ValidateUsers validateUsers = ValidateUsers.getINSTANCE();
+//        validateUsers.setUserStorage(new UserFakeDb());
+//        HttpServletRequest req = mock(HttpServletRequest.class);
+//        when(req.getParameter("login")).thenReturn("user01");
+//        when(req.getParameter("password")).thenReturn("pass01");
+//        when(req.getParameter("name")).thenReturn("userName");
+//        when(req.getParameter("surname")).thenReturn("userSurname");
+//        when(req.getParameter("role")).thenReturn("user");
+//        when(req.getParameter("department")).thenReturn("dep1");
+//        when(req.getParameter("isActive")).thenReturn("1");
+//        validateUsers.addUser(req);
+//        HttpServletRequest req2 = mock(HttpServletRequest.class);
+//        when(req2.getParameter("id")).thenReturn("1");
+//        when(req2.getParameter("name")).thenReturn("new-userName");
+//        String actual = validateUsers.updateUser(req2);
+//        String expected = "OK";
+//        assertThat(actual, is(expected));
+//    }
 
     @Test
     public void whenDeleteTerminalThenReturnOK() {

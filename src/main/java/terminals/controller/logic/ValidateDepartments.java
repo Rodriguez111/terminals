@@ -4,6 +4,7 @@ import terminals.storage.DBDepartment;
 import terminals.storage.DepartmentStorage;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -26,7 +27,12 @@ public class ValidateDepartments implements DepartmentsValidator {
     @Override
     public List<String> findAllDepartments() {
         List<String> listOfDepartments = departmentStorage.findAllDepartments();
-        listOfDepartments.add("");
+        listOfDepartments.sort(new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return o1.compareTo(o2);
+            }
+        });
         return listOfDepartments;
     }
 
@@ -37,9 +43,16 @@ public class ValidateDepartments implements DepartmentsValidator {
     }
 
     @Override
+    public String renameDepartment(String oldDepName, String newDepName) {
+        int id = departmentStorage.findIdByDepartment(oldDepName);
+        return departmentStorage.renameDepartment(id, newDepName);
+    }
+
+    @Override
     public String deleteDepartment(HttpServletRequest request) {
       return departmentStorage.deleteDepartment(request.getParameter("department"));
     }
+
 
 
 }
