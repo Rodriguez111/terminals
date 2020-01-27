@@ -15,7 +15,7 @@
 
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.3<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="common_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="common_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>
@@ -220,46 +220,46 @@
         getCountOfActiveTerminals();
 
     var mainTable = document.getElementById("main_table");
-    var table = "<tr class=\"table_header\">\n" +
-        "<th id=\"regIdColumn\">Учетный номер</th>\n" +
-        "<th>Модель</th>\n" +
+    var table = "<thead><tr class=\"table_header\">\n" +
+        "<th id='headerRegIdColumn'>Учетный номер</th>\n" +
+        "<th id='headerModelColumn'>Модель</th>\n" +
         "<th>Серийный номер</th>\n" +
         "<th>Инв. номер</th>\n" +
-        "<th>Комментарий</th>\n" +
+        "<th id='headerCommentColumn'>Комментарий</th>\n" +
         "<th>Департамент</th>\n" +
-        "<th>Выдан пользователю</th>\n" +
-        "<th>Активен</th>\n" +
-        "<th>Дата создания</th>\n" +
-        "<th>Дата изменения</th>\n";
+        "<th id='headerUserLoginColumn'>Выдан пользователю</th>\n" +
+        "<th id='headerActiveColumn'>Активен</th>\n" +
+        "<th id='headerCreateColumn'>Дата создания</th>\n" +
+        "<th id='headerUpdateColumn'>Дата изменения</th>\n";
         if(${role == 'root'}) {
-            table += "<th id=\"updateColumn\">Редактировать</th>\n" +
-            "<th id=\"deleteColumn\">Удалить</th>"
+            table += "<th id=\"headerEditColumn\">Редактировать</th>\n" +
+            "<th id=\"headerDeleteColumn\">Удалить</th>"
         }
-        table += " </tr>";
+        table += " </tr></thead>";
     var listOfTerminals = data.listOfTerminals;
    for(var i = 0; i < listOfTerminals.length; i++) {
        var active = listOfTerminals[i].terminalIsActive ? "Да" : "Нет";
 
-      table += "<tr class='row'><td class='cell'>" + listOfTerminals[i].regId + "</td>"
-       +"<td class='cell'>" + listOfTerminals[i].terminalModel + "</td>"
+      table += "<tr class='row'><td id='bodyRegIdColumn' class='cell'>" + listOfTerminals[i].regId + "</td>"
+       +"<td id='bodyModelColumn' class='cell'>" + listOfTerminals[i].terminalModel + "</td>"
        +"<td class='cell'>" + listOfTerminals[i].serialId + "</td>"
        +"<td class='cell'>" + listOfTerminals[i].inventoryId + "</td>"
-       +"<td class='cell' style='max-width: 200px'>" + listOfTerminals[i].terminalComment + "</td>"
+       +"<td id='bodyCommentColumn' class='cell'>" + listOfTerminals[i].terminalComment + "</td>"
        +"<td class='cell'>" + listOfTerminals[i].departmentName + "</td>"
-       +"<td class='cell'>" + listOfTerminals[i].userLogin + "</td>"
-       +"<td class='cell'>" + active + "</td>"
-       +"<td class='cell'>" + listOfTerminals[i].createDate + "</td>"
-       +"<td class='cell'>" + listOfTerminals[i].lastUpdateDate + "</td>";
+       +"<td id='bodyUserLoginColumn' class='cell'>" + listOfTerminals[i].userLogin + "</td>"
+       +"<td id='bodyActiveColumn' class='cell'>" + active + "</td>"
+       +"<td id='bodyCreateColumn' class='cell'>" + listOfTerminals[i].createDate + "</td>"
+       +"<td id='bodyUpdateColumn' class='cell'>" + listOfTerminals[i].lastUpdateDate + "</td>";
 
        if(${role == 'root'}) {
-           table += "<td class='cell' style='text-align: center'>"
+           table += "<td id='bodyEditColumn' class='cell' style='text-align: center'>"
            + "<form class='forms' method='post' action='${pageContext.servletContext.contextPath}/selector'>"
 
            + "<input type='hidden' name='id' value=" + listOfTerminals[i].id + ">"
            + "<input type='hidden' name='action' value='update_terminal'/>"
-           + "<input type='submit' value='Изменить'>"
+           + "<input class='editBtn' type='submit' value='Изменить'>"
            + "</form></td>"
-           + "<td class='cell' style='text-align: center'>"
+           + "<td id='bodyDeleteColumn' class='cell' style='text-align: center'>"
            + "<form class='delete_forms' method='post' action='${pageContext.servletContext.contextPath}/deleteterminal' >"
            + "<input type='hidden' name='id' value=" + listOfTerminals[i].id + ">"
            + "<input type='hidden' name='userLogin' value=" + listOfTerminals[i].userLogin + ">"
@@ -271,7 +271,7 @@
        }
       table += "</tr>";
    }
-    table += "<tr>"
+    table += "<tfoot><tr>"
         + "<td id='table_footer' colspan='12'>"
         + "<div id='create_button'>"
         + "<form method='post' action='${pageContext.servletContext.contextPath}/selector'>"
@@ -282,7 +282,7 @@
         + "<c:set scope='session' var='listOfTerminals' value='${listOfTerminals}' />"
         + "<input type='button' value='Генерировать ШК' onClick='location.href=\"${pageContext.servletContext.contextPath}/displaybarcodes\"'>"
         + "</form></div>"
-        + "</td></tr>";
+        + "</td></tr</tfoot>";
      mainTable.innerHTML = table;
     prepareForModal();
 }

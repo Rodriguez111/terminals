@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class JsonServlet extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonServlet.class);
     private final static DepartmentsValidator DEPARTMENTS_VALIDATOR = ValidateDepartments.getINSTANCE();
     private final static TerminalsValidator TERMINALS_VALIDATOR = ValidateTerminals.getINSTANCE();
     private final static RolesValidator ROLES_VALIDATOR = ValidateRoles.getINSTANCE();
@@ -26,7 +25,6 @@ public class JsonServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LOG.info("Enter method");
         BufferedReader br = req.getReader();
         StringBuilder sb = new StringBuilder();
         String read = "";
@@ -34,7 +32,6 @@ public class JsonServlet extends HttpServlet {
             sb.append(read);
         }
         String requestFromClient = sb.toString();
-        System.out.println("requestFromClient = " + requestFromClient);
         JSONObject jsonObject = new JSONObject();
 
         if (requestFromClient.equals("getListOfDeparts")) {
@@ -92,6 +89,5 @@ public class JsonServlet extends HttpServlet {
         PrintWriter printWriter = resp.getWriter();
         printWriter.print(jsonObject);
         printWriter.flush();
-        LOG.info("Exit method");
     }
 }

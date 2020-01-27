@@ -11,6 +11,12 @@
     <title>Редактирование пользователя</title>
 
     <script>
+        window.onload = function () {
+            loadPage();
+
+        };
+
+
         function validate() {
             var result = true;
             var infoBlock = document.getElementById('sys_info');
@@ -49,7 +55,7 @@
         }
 
         function validateLength(string, maxLength) {
-            return string.length == 0 || (string.length >= 3 && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t'));
+            return string.length == 0 || (string.length >= 3 && string.length <= maxLength && string.indexOf(' ') === - 1  && string.indexOf('\t') === -1);
         }
 
 
@@ -79,6 +85,8 @@
                 options.innerHTML = listOfDepartments[i];
                 selector.appendChild(options);
             }
+            getAndDisplayUserInfo();
+
         }
 
         function getAndDisplayDepartments() {
@@ -94,6 +102,7 @@
                 options.innerHTML = listOfRoles[i];
                 selector.appendChild(options);
             }
+             getAndDisplayDepartments()
         }
 
         function getAndDisplayRoles() {
@@ -122,6 +131,7 @@
                 .getElementsByTagName("option");
             for (var i = 0; i < selectorsOfDepartmentSelector.length; i++) {
                 if(selectorsOfDepartmentSelector[i].value === user.userDepartment) {
+
                     selectorsOfDepartmentSelector[i].selected = true;
                 }
             }
@@ -138,6 +148,7 @@
                 option.innerHTML = "root";
                 roleSelector.appendChild(option);
             } else {
+
                 for (var i = 0; i < selectorsOfRoleSelector.length; i++) {
                     if(selectorsOfRoleSelector[i].value === user.userRole) {
                         selectorsOfRoleSelector[i].selected = true;
@@ -146,14 +157,17 @@
             }
         }
 
+        function loadPage() {
+            getAndDisplayRoles();
+        }
+
         function getAndDisplayUserInfo() {
             var jsonObj = JSON.stringify({"getUserInfo":${param.id}});
             sendAjaxRequest(jsonObj, displayUserInfo);
         }
 
-        getAndDisplayDepartments();
-        getAndDisplayRoles();
-        getAndDisplayUserInfo();
+
+
 
 
     </script>

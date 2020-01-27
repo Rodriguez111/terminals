@@ -19,7 +19,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class GiveValidate extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(GiveValidate.class);
     private final static RegValidator REGS_VALIDATOR = ValidateRegs.getINSTANCE();
 
     @Override
@@ -31,9 +30,7 @@ public class GiveValidate extends HttpServlet {
             builder.append(read);
         }
         String stringFromClient = builder.toString();
-        LOG.info("From client: " + stringFromClient);
         JSONObject result = REGS_VALIDATOR.validateUserInputForGiving(stringFromClient);
-        LOG.info("From server: " + result);
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         out.print(result);

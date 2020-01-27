@@ -16,7 +16,7 @@
 
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.3<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="common_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="common_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>
@@ -40,21 +40,23 @@
 
 <div class="main_block">
     <table class="main_table">
+        <thead>
         <tr class="table_header">
             <th>Название департамента</th>
-            <th id="updateColumn">Редактировать</th>
-            <th id="deleteColumn">Удалить</th>
+            <th id="headerUpdateColumn">Редактировать</th>
+            <th id="headerDeleteColumn">Удалить</th>
 
         </tr>
+        </thead>
 
         <c:forEach items="${listOfDepartments}" var="eachDepartment">
             <tr class='row'>
                 <td class='department_name_cell'>${eachDepartment}</td>
-                <td class='cell' style="text-align: center">
+                <td id="bodyUpdateColumn" class='cell' style="text-align: center">
                     <button class="updateBtn" onclick="update(this)">Переименовать</button>
                 </td>
 
-                <td class='cell' style="text-align: center">
+                <td id="bodyDeleteColumn" class='cell' style="text-align: center">
                     <form class="delete_forms" method='post'
                           action="${pageContext.servletContext.contextPath}/deletedepart">
                         <input type='hidden' name='department' class="departmentToDelete" value='${eachDepartment}'/>
@@ -67,6 +69,7 @@
 
         </c:forEach>
 
+        <tfoot>
         <tr>
             <td id="table_footer" class="table_footer">
                 <form method='post' action="${pageContext.servletContext.contextPath}/selector">
@@ -84,7 +87,7 @@
                 </div>
             </td>
         </tr>
-
+        </tfoot>
     </table>
 </div>
 
@@ -243,7 +246,7 @@
     }
 
     function validateLength(string, minLength, maxLength) {
-        return string.length >= minLength && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
+        return string.length >= minLength && string.length <= maxLength && string.indexOf(' ') === - 1  && string.indexOf('\t') === -1;
     }
 
         

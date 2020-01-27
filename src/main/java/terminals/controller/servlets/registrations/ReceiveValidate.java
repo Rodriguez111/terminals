@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class ReceiveValidate extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(ReceiveValidate.class);
     private final static RegValidator REGS_VALIDATOR = ValidateRegs.getINSTANCE();
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -26,10 +25,7 @@ public class ReceiveValidate extends HttpServlet {
             builder.append(read);
         }
         String stringFromClient = builder.toString();
-        LOG.info("From client: " + stringFromClient);
         JSONObject result =  REGS_VALIDATOR.validateUserInputForReceiving(stringFromClient);
-
-        LOG.info("From server: " + result);
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         out.print(result);

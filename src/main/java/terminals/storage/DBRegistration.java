@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBRegistration implements RegistrationStorage {
-    private static final Logger LOG = LoggerFactory.getLogger(DBRegistration.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(DBRegistration.class);
     private final static DBUser USER_STORAGE = DBUser.getINSTANCE();
     private final static DBTerminal TERMINAL_STORAGE = DBTerminal.getINSTANCE();
     private final static DBRegistration INSTANCE = new DBRegistration();
@@ -30,7 +30,7 @@ public class DBRegistration implements RegistrationStorage {
 
 
     public List<Registration> findEntriesByFilter(Map<String, String> parameters) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         List<Registration> resultList = new ArrayList<>();
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = composeFilterQuery(parameters);
@@ -41,12 +41,12 @@ public class DBRegistration implements RegistrationStorage {
                 resultList.add(composeEntryFromDBResultSet(resultSet));
             }
         });
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return resultList;
     }
 
     private String composeFilterQuery(Map<String, String> parameters) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         StringBuilder sb = new StringBuilder("SELECT * FROM registrations WHERE ");
 
         if(parameters.containsKey("regIdFilter")) {
@@ -73,15 +73,40 @@ public class DBRegistration implements RegistrationStorage {
                 userPart = userPart.substring(0, userPart.length() - 7) ;
             }
             sb.append(userPart);
-            sb.append(")");
+            sb.append(") AND ");
+        }
+
+        if(parameters.containsKey("whoGaveFilter")) {
+            sb.append("admin_gave_id IN (");
+            StringBuilder adminGaveId = new StringBuilder("SELECT user_id FROM users WHERE ");
+            String fullName =  "user_surname LIKE '%" + parameters.get("whoGaveFilter")
+                    + "%' OR user_name LIKE '%" + parameters.get("whoGaveFilter") + "%' ";
+            adminGaveId.append(fullName);
+            String adminGavePart = adminGaveId.toString();
+            if(adminGavePart.endsWith("WHERE ")) {
+                adminGavePart = adminGavePart.substring(0, adminGavePart.length() - 7) ;
+            }
+            sb.append(adminGavePart);
+            sb.append(") AND ");
+        }
+
+        if(parameters.containsKey("whoReceivedFilter")) {
+            sb.append("admin_received_id IN (");
+            StringBuilder adminReceivedId = new StringBuilder("SELECT user_id FROM users WHERE ");
+            String fullName =  "user_surname LIKE '%" + parameters.get("whoReceivedFilter")
+                    + "%' OR user_name LIKE '%" + parameters.get("whoReceivedFilter") + "%' ";
+            adminReceivedId.append(fullName);
+            String adminReceivedPart = adminReceivedId.toString();
+            if(adminReceivedPart.endsWith("WHERE ")) {
+                adminReceivedPart = adminReceivedPart.substring(0, adminReceivedPart.length() - 7) ;
+            }
+            sb.append(adminReceivedPart);
+            sb.append(") AND ");
         }
 
         if(parameters.containsKey("startDateFilterFrom") || parameters.containsKey("startDateFilterTo")
                 ||  parameters.containsKey("endDateFilterFrom") || parameters.containsKey("endDateFilterTo")) {
             StringBuilder stringForDate = new StringBuilder();
-            if(!sb.toString().endsWith("WHERE ")) {
-                stringForDate.append("AND ");
-            }
             String startDateFilterFrom = parameters.containsKey("startDateFilterFrom") ? "record_start_date > '" + parameters.get("startDateFilterFrom") + "' AND " : "";
             String startDateFilterTo = parameters.containsKey("startDateFilterTo") ? "record_start_date < '" + parameters.get("startDateFilterTo") + "' AND " : "";
             String endDateFilterFrom = parameters.containsKey("endDateFilterFrom") ? "record_end_date > '" + parameters.get("endDateFilterFrom") + "' AND " : "";
@@ -103,13 +128,13 @@ public class DBRegistration implements RegistrationStorage {
         if(query.endsWith("WHERE ")) {
             query = query.substring(0, query.length() - 7) ;
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return query;
     }
 
     @Override
     public int findIdByField(Map<String, String> parameters) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query =  queryManager.queryComposerForExactSearch("SELECT record_id FROM registrations WHERE ", parameters);
@@ -127,13 +152,13 @@ public class DBRegistration implements RegistrationStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public void addEntry(Registration entry) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO registrations "
                 + "(user_id, terminal_id, admin_gave_id) "
@@ -152,12 +177,12 @@ public class DBRegistration implements RegistrationStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     @Override
     public void updateEntry(int id, int whoReceivedId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE registrations SET admin_received_id = ?, record_finish_date = datetime(CURRENT_TIMESTAMP, 'localtime')  WHERE record_id=?";
         List<Object> params = new ArrayList<>();
@@ -170,12 +195,12 @@ public class DBRegistration implements RegistrationStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     @Override
     public List<Registration> findAllEntriesForTheLastDay(String yesterday) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         List<Registration> resultList = new ArrayList<>();
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT * FROM registrations WHERE record_start_date > ?";
@@ -187,7 +212,7 @@ public class DBRegistration implements RegistrationStorage {
                 resultList.add(composeEntryFromDBResultSet(resultSet));
             }
         });
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return resultList;
     }
 

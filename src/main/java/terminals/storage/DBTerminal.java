@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DBTerminal implements TerminalStorage {
-    private static final Logger LOG = LoggerFactory.getLogger(DBTerminal.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(DBTerminal.class);
     private final static DBTerminal INSTANCE = new DBTerminal();
     private final static DBDepartment DEPARTMENTS = DBDepartment.getINSTANCE();
     private final static DBUser USERS = DBUser.getINSTANCE();
@@ -33,7 +33,7 @@ public class DBTerminal implements TerminalStorage {
 
     @Override
     public List<Terminal> findAllTerminals() {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         List<Terminal> resultList = new ArrayList<>();
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT * FROM terminals";
@@ -44,13 +44,13 @@ public class DBTerminal implements TerminalStorage {
                 resultList.add(composeTerminalFromDBResultSet(resultSet));
             }
         });
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return resultList;
     }
 
     @Override
     public Terminal findTerminalById(int id) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         Terminal result = null;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT * FROM terminals WHERE terminal_id = ?";
@@ -68,7 +68,7 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -93,7 +93,7 @@ public class DBTerminal implements TerminalStorage {
 
     @Override
     public int findIdByRegId(String regId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT terminal_id FROM terminals WHERE terminal_reg_id = ?";
@@ -111,13 +111,13 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String findFieldById(int id, String fieldName, DataType dataType) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String result = "";
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT " + fieldName + " FROM terminals WHERE terminal_id = ?";
@@ -143,13 +143,13 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String addTerminal(Terminal terminal) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO terminals "
                 + "(terminal_reg_id, terminal_model, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active)"
@@ -181,13 +181,13 @@ public class DBTerminal implements TerminalStorage {
             e.printStackTrace();
             return composeErrorMessagesFromException(e);
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String addTerminalWithDepartment(Terminal terminal) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO terminals "
                 + "(terminal_reg_id, terminal_model, terminal_serial_id, terminal_inventory_id, terminal_comment, terminal_is_active, " +
@@ -219,14 +219,14 @@ public class DBTerminal implements TerminalStorage {
             e.printStackTrace();
             return composeErrorMessagesFromException(e);
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String updateTerminal(Terminal terminal) {
         String result = "OK";
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE terminals SET terminal_reg_id=?, terminal_model=?, terminal_serial_id=?, terminal_inventory_id=?," +
                 " terminal_comment=?, terminal_is_active=?, terminal_department_id=null, " +
@@ -257,7 +257,7 @@ public class DBTerminal implements TerminalStorage {
             e.printStackTrace();
             return composeErrorMessagesFromException(e);
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -278,7 +278,7 @@ public class DBTerminal implements TerminalStorage {
     @Override
     public String updateTerminalWithDepartment(Terminal terminal) {
         String result = "OK";
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE terminals SET terminal_reg_id=?, terminal_model=?, terminal_serial_id=?, terminal_inventory_id=?, " +
                 "terminal_comment=?, terminal_is_active=?, terminal_department_id=?, " +
@@ -311,7 +311,7 @@ public class DBTerminal implements TerminalStorage {
             e.printStackTrace();
             return composeErrorMessagesFromException(e);
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -337,18 +337,18 @@ public class DBTerminal implements TerminalStorage {
     }
 
     private String formatDate(String date) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String result = "";
         if (date != null) {
             result = date.replaceAll("-", ".");
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public int findIdByField(Map<String, String> parameters) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = queryManager.queryComposerForExactSearch("SELECT terminal_id FROM terminals WHERE ", parameters);
@@ -365,7 +365,7 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -379,7 +379,7 @@ public class DBTerminal implements TerminalStorage {
 
     @Override
     public int countOfTerminals(String whatToCount) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT COUNT(terminal_id) FROM terminals";
@@ -402,13 +402,13 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public void addUserToTerminal(int terminalId, int userId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE terminals SET user_id=? WHERE terminal_id=?";
         List<Object> params = new ArrayList<>();
@@ -422,12 +422,12 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     @Override
     public void removeUserFromTerminal(int terminalId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE terminals SET user_id= NULL WHERE terminal_id=?";
         List<Object> params = new ArrayList<>();
@@ -439,6 +439,6 @@ public class DBTerminal implements TerminalStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 }

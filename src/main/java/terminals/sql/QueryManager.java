@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class QueryManager {
-    private static final Logger LOG = LoggerFactory.getLogger(QueryManager.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(QueryManager.class);
     private final Connection connection;
     private final Map<Class, TriConsumer<Integer, PreparedStatement, Object>> dispatcher = new HashMap<>();
 
@@ -44,13 +44,15 @@ public class QueryManager {
             }
             consumer.accept(ps);
         } catch (Exception e) {
-            LOG.error(e.getMessage(), e);
+            System.out.println(e.getMessage());
+//            LOG.error(e.getMessage(), e);
         } finally {
             if (connection != null) {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
+                    System.out.println(e.getMessage());
+//                    LOG.error(e.getMessage(), e);
                 }
             }
         }
@@ -70,7 +72,8 @@ public class QueryManager {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
+                    System.out.println(e.getMessage());
+//                    LOG.error(e.getMessage(), e);
                 }
             }
         }
@@ -93,7 +96,8 @@ public class QueryManager {
                 try {
                     connection.close();
                 } catch (SQLException e) {
-                    LOG.error(e.getMessage(), e);
+                    System.out.println(e.getMessage());
+//                    LOG.error(e.getMessage(), e);
                 }
             }
         }

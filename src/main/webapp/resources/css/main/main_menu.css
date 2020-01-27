@@ -131,18 +131,20 @@
 
 .adminInformation {
     font-family: Segoe, "Segoe UI", "DejaVu Sans", "Trebuchet MS", Verdana, "sans-serif";
-    font-size: 1.2vh;
+    /*font-size: .6vw;*/
+    font-size: 11px;
     font-weight: bold;
     text-align: left;
     color:#000000;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding-left: 3px;
+    padding-right: 3px;
     text-decoration: none;
     border-right: 1px solid #5A5A5A;
     display: table-cell;
     height: 50px;
     width: 120px;
     vertical-align:middle;
+    letter-spacing: -0.5px;
 }
 
 .exit {

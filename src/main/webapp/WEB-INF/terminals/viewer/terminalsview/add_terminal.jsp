@@ -26,6 +26,9 @@
             } else if (!validateLength(regId, 3, 10)) {
                 result = false;
                 infoBlock.innerHTML = '"Учетный номер" должен быть от 3 до 10 символов и не содержать пробелы';
+            } else if (!validateRegId(regId)) {
+                result = false;
+                infoBlock.innerHTML = 'Поле "Учетный номер" должно иметь числовое значение всех символов, кроме первых двух. Например AB12345';
             } else if (model == '') {
                 result = false;
                 infoBlock.innerHTML = 'Поле "Модель" не может быть пустым';
@@ -57,14 +60,17 @@
             return result;
         }
         function validateLength(string, minLength, maxLength) {
-            return string.length >= minLength && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
+            return string.length >= minLength && string.length <= maxLength && string.indexOf(' ') === - 1  && string.indexOf('\t') === -1;
         }
 
         function validateComment(string, maxLength) {
-            return string.length <= maxLength && !string.includes('  ')  && !string.includes('\t');
+            return string.length <= maxLength && string.indexOf('  ') === - 1  && string.indexOf('\t') === -1;
         }
 
-
+        function validateRegId(string) {
+            var regex = new RegExp("^[A-zА-я]{2}[0-9]{1,8}$");
+            return regex.test(string);
+        }
 
         function sendAjaxRequest(dataToSend, callback) {
             $.ajax('./json', {

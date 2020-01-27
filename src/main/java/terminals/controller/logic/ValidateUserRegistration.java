@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ValidateUserRegistration implements UserRegistrationValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(ValidateUserRegistration.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(ValidateUserRegistration.class);
     private static final ValidateUserRegistration INSTANCE = new ValidateUserRegistration();
     private TerminalStorage terminalStorage = DBTerminal.getINSTANCE();
     private RegistrationStorage registrationStorage = DBRegistration.getINSTANCE();
@@ -40,7 +40,7 @@ public class ValidateUserRegistration implements UserRegistrationValidator {
 
     @Override
     public JSONObject validateUserInputForGiving(String stringFromClient) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         JSONObject jsonFromClient = new JSONObject(stringFromClient);
         String login = jsonFromClient.getString("userInputLogin");
         int terminalId = jsonFromClient.getInt("terminalId");
@@ -74,7 +74,7 @@ public class ValidateUserRegistration implements UserRegistrationValidator {
                 }
             }
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -94,7 +94,7 @@ public class ValidateUserRegistration implements UserRegistrationValidator {
 
     @Override
     public JSONObject validateUserInputForReceiving(String stringFromClient) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         JSONObject jsonFromClient = new JSONObject(stringFromClient);
         String login = jsonFromClient.getString("userInputLogin");
         int terminalId = jsonFromClient.getInt("terminalId");

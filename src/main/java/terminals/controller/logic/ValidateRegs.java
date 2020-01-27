@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ValidateRegs implements RegValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(ValidateRegs.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(ValidateRegs.class);
     private final static ValidateRegs INSTANCE = new ValidateRegs();
     private final static TerminalRegistrationValidator TERMINAL_REGISTRATION_VALIDATOR = ValidateTerminalRegistration.getINSTANCE();
     private final static UserRegistrationValidator USER_REGISTRATION_VALIDATOR = ValidateUserRegistration.getINSTANCE();
@@ -57,7 +57,7 @@ public class ValidateRegs implements RegValidator {
 
     @Override
     public List<Registration> findEntriesByFilter(HttpServletRequest request) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         Map<String, String> mapOfFilters = generateParameters(request);
 
         List<Registration> list = regStorage.findEntriesByFilter(mapOfFilters);
@@ -67,7 +67,7 @@ public class ValidateRegs implements RegValidator {
                 return o1.getStartDate().compareTo(o2.getStartDate());
             }
         });
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return list;
     }
 
@@ -77,19 +77,19 @@ public class ValidateRegs implements RegValidator {
 
     @Override
     public JSONObject validateUserInputForGiving(String stringFromClient) {
-        LOG.info("Enter and exit method");
+//        LOG.info("Enter and exit method");
 
         return USER_REGISTRATION_VALIDATOR.validateUserInputForGiving(stringFromClient);
     }
 
     @Override
     public JSONObject validateUserInputForReceiving(String stringFromClient) {
-        LOG.info("Enter and exit method");
+//        LOG.info("Enter and exit method");
         return USER_REGISTRATION_VALIDATOR.validateUserInputForReceiving(stringFromClient);
     }
 
     private Map<String, String> generateParameters(HttpServletRequest request) {
-       LOG.info("Enter method");
+//       LOG.info("Enter method");
        Map<String, String> map = new HashMap<>();
        String regIdFilter = request.getParameter("regIdFilter");
        String loginFilter = request.getParameter("loginFilter");
@@ -127,7 +127,7 @@ public class ValidateRegs implements RegValidator {
        if(!endDateFilterTo.equals("")) {
            map.put("endDateFilterTo", endDateFilterTo);
        }
-       LOG.info("Exit method");
+//       LOG.info("Exit method");
       return map;
    }
 
@@ -146,10 +146,28 @@ public class ValidateRegs implements RegValidator {
                 int result = 0;
                 if(sortDirection.equals("up")) {
                     mapOfButtonConditions.put("sortByRegId", "up");
-                    result = o1.getTerminalRegistrationId().compareTo(o2.getTerminalRegistrationId());
+                    Integer first = 0;
+                    int second = 0;
+                    try{
+                        first = Integer.parseInt(o1.getTerminalRegistrationId().substring(2));
+                        second = Integer.parseInt(o2.getTerminalRegistrationId().substring(2));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Некорректный формат учетного номера терминала");
+                        e.printStackTrace();
+                    }
+                    result =  first.compareTo(second);
                 } else {
                     mapOfButtonConditions.put("sortByRegId", "down");
-                    result = o2.getTerminalRegistrationId().compareTo(o1.getTerminalRegistrationId());
+                    Integer first = 0;
+                    Integer second = 0;
+                    try{
+                        first = Integer.parseInt(o1.getTerminalRegistrationId().substring(2));
+                        second = Integer.parseInt(o2.getTerminalRegistrationId().substring(2));
+                    } catch (NumberFormatException e) {
+                        System.out.println("Некорректный формат учетного номера терминала");
+                        e.printStackTrace();
+                    }
+                    result = second.compareTo(first);
                 }
                 return result;
             }

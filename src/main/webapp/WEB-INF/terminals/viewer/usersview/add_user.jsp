@@ -57,7 +57,7 @@
         }
 
         function validateLength(string, maxLength) {
-            return string.length >= 3 && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
+            return string.length >= 3 && string.length <= maxLength && string.indexOf(' ') === - 1  && string.indexOf('\t') === -1;
         }
 
 

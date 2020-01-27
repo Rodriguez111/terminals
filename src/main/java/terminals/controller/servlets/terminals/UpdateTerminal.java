@@ -24,16 +24,5 @@ public class UpdateTerminal extends HttpServlet {
             req.getRequestDispatcher(Pages.UPDATE_TERMINAL_JSP.page).forward(req, resp);
         }
 
-
-
-//        if(result.equals("Терминал с таким учетным номером уже существует")
-//                || result.equals("Терминал с таким серийным номером уже существует")
-//                || result.equals("Терминал с таким инвентарным номером уже существует")) {
-//            req.setAttribute("sysMessage", result);
-//            req.getRequestDispatcher(Pages.UPDATE_TERMINAL_JSP.page).forward(req, resp);
-//        }  else {
-//            resp.sendRedirect(req.getContextPath() + "/terminals");
-//            //req.getRequestDispatcher(Pages.MAIN_TERMINALS_JSP.page).forward(req, resp);
-//        }
     }
 }

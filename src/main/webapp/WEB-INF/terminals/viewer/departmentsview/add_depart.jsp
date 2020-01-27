@@ -27,7 +27,7 @@
             return result;
         }
         function validateLength(string, minLength, maxLength) {
-            return string.length >= minLength && string.length <= maxLength && !string.includes(' ')  && !string.includes('\t');
+            return string.length >= minLength && string.length <= maxLength && string.indexOf(' ') === - 1  && string.indexOf('\t') === -1;
         }
 
     </script>

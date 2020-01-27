@@ -93,12 +93,12 @@
                 </div>
 
                 <div class="userNameBlock">
-                    <div class="userName"> Имя и фамилия пользователя</div>
+                    <div class="userName"> Фамилия и имя пользователя</div>
                     <div id="userNameInfo" class="userNameInfo"></div>
                 </div>
 
                 <div class="adminNameBlock">
-                    <div class="adminName"> Имя и фамилия администратора</div>
+                    <div class="adminName"> Фамилия и имя администратора</div>
                     <div id="adminNameInfo" class="adminNameInfo">${surname} ${name}</div>
                 </div>
 

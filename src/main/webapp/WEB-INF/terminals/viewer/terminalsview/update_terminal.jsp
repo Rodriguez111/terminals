@@ -11,6 +11,13 @@
     <title>Редактирование терминала</title>
 
     <script>
+
+        window.onload = function () {
+            loadPage();
+        };
+
+
+
         function validate() {
             var result = true;
             var infoBlock = document.getElementById('sys_info');
@@ -25,20 +32,19 @@
             if (!validateLength(regId, 3, 10)) {
                 result = false;
                 infoBlock.innerHTML = '"Учетный номер" должен быть от 3 до 10 символов и не содержать пробелы, или оставьте пустым';
-            }
-            if (!validateLength(model, 3, 20)) {
+            } else if (regId !== '' && !validateRegId(regId)) {
+                result = false;
+                infoBlock.innerHTML = 'Поле "Учетный номер" должно иметь числовое значение всех символов, кроме первых двух. Например AB12345';
+            } else if (!validateLength(model, 3, 20)) {
                 result = false;
                 infoBlock.innerHTML = '"Модель" должна быть от 3 до 20 символов и не содержать пробелы, или оставьте пустым';
-            }
-            if (!validateLength(serialId, 3, 30)) {
+            } else if (!validateLength(serialId, 3, 30)) {
                 result = false;
                 infoBlock.innerHTML = '"Серийный номер" должен быть от 3 до 30 символов и не содержать пробелы, или оставьте пустым';
-            }
-            if (!validateLength(inventoryId, 3, 20)) {
+            } else if (!validateLength(inventoryId, 3, 20)) {
                 result = false;
                 infoBlock.innerHTML = '"Инв. номер" должен быть от 3 до 20 символов и не содержать пробелы, или оставьте пустым';
-            }
-            if (!validateComment(comment, 500)) {
+            } else if (!validateComment(comment, 500)) {
                 result = false;
                 infoBlock.innerHTML = 'Поле "Комментарий" не должно содержать более 500 символов ' +
                     'и не должно содержать двойных пробелов, или оставьте пустым';
@@ -49,23 +55,26 @@
         }
 
         function validateLength(string, minLength, maxLength) {
-            return string.length == 0 || (string.length >= minLength && string.length <= maxLength && !string.includes(' ') && !string.includes('\t'));
+            return string.length == 0 || (string.length >= minLength && string.length <= maxLength && string.indexOf(' ') === -1 && string.indexOf('\t') === -1);
         }
 
         function validateComment(string, maxLength) {
-            return string.length == 0 || (string.length <= maxLength && !string.includes('  '));
+            return string.length == 0 || (string.length <= maxLength && string.indexOf('  ') === -1);
         }
 
-
+        function validateRegId(string) {
+            var regex = new RegExp("^[A-zА-я]{2}[0-9]{1,8}$");
+            return regex.test(string);
+        }
 
 
         function sendAjaxRequest(dataToSend, callback) {
             $.ajax('./json', {
-                method:'post',
-                data:dataToSend,
-                contentType:'text/json; charset=utf-8',
-                dataType:'json',
-                success:function (data) {
+                method: 'post',
+                data: dataToSend,
+                contentType: 'text/json; charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
                     callback(data);
                 }
             })
@@ -73,6 +82,7 @@
 
 
         function displayDepartmentsSelector(data) {
+            // console.log("01 - START displayDepartmentsSelector");
             var listOfDepartments = data.listOfDeparts;
             var selector = document.getElementById("departmentsSelector");
             var options = document.createElement("option");
@@ -87,9 +97,12 @@
                 options.innerHTML = listOfDepartments[i];
                 selector.appendChild(options);
             }
+            getAndDisplayTerminalInfo();
+            // console.log("02 - FINISH displayDepartmentsSelector");
         }
 
         function displayTerminalInfo(data) {
+            // console.log("03 - START displayTerminalInfo");
             var terminal = data;
             var form = document.getElementById("updateform");
             var regId = form.regId;
@@ -103,14 +116,18 @@
             var comment = form.comment;
             comment.setAttribute("placeholder", terminal.terminalComment);
             var isActive = form.isActive;
-            isActive.checked  = terminal.terminalIsActive;
+            isActive.checked = terminal.terminalIsActive;
             var selectorsOfDepartmentSelector = document.getElementsByTagName("option");
             for (var i = 0; i < selectorsOfDepartmentSelector.length; i++) {
-                if(selectorsOfDepartmentSelector[i].value === terminal.departmentName) {
+                if (selectorsOfDepartmentSelector[i].value === terminal.departmentName) {
                     selectorsOfDepartmentSelector[i].selected = true;
                 }
             }
+            // console.log("04 - FINISH displayTerminalInfo");
+        }
 
+        function loadPage() {
+            getAndDisplayDepartments();
         }
 
         function getAndDisplayDepartments() {
@@ -121,11 +138,6 @@
             var jsonObj = JSON.stringify({"getTerminalInfo":${param.id}});
             sendAjaxRequest(jsonObj, displayTerminalInfo);
         }
-
-        getAndDisplayDepartments();
-        getAndDisplayTerminalInfo();
-
-
 
 
 
@@ -161,7 +173,7 @@
             <tr>
                 <td class="cell">Комментарий:</td>
                 <td><textarea name="comment" class="commentField" cols="32" rows="7"
-                               AUTOCOMPLETE="off" style="resize: none"></textarea></td>
+                              AUTOCOMPLETE="off" style="resize: none"></textarea></td>
             </tr>
             <tr>
                 <td class="cell">Департамент:</td>

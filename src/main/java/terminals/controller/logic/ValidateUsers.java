@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 
 public class ValidateUsers implements UsersValidator {
-    private static final Logger LOG = LoggerFactory.getLogger(ValidateUsers.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(ValidateUsers.class);
     private final static ValidateUsers INSTANCE = new ValidateUsers();
 
     private UserStorage userStorage = DBUser.getINSTANCE();
@@ -32,7 +32,7 @@ public class ValidateUsers implements UsersValidator {
 
     @Override
     public User checkUserCanLogin(String login, String password) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         List<User> list = userStorage.findAllUsers();
         User user = null;
         for (User eachUser : list) {
@@ -42,7 +42,7 @@ public class ValidateUsers implements UsersValidator {
                 break;
             }
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return user;
     }
 
@@ -93,7 +93,7 @@ public class ValidateUsers implements UsersValidator {
 
     @Override
     public String addUser(HttpServletRequest request) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String resultMessage;
         String login = request.getParameter("login");
         String password = request.getParameter("password");
@@ -108,13 +108,13 @@ public class ValidateUsers implements UsersValidator {
         } else {
             resultMessage =  userStorage.addUserWithDepartment(user);
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return resultMessage;
     }
 
     @Override
     public String updateUser(HttpServletRequest request) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String result = "Пользователь не существует";
         User user = findUserById(Integer.parseInt(request.getParameter("id")));
         if(user != null) {
@@ -135,7 +135,7 @@ public class ValidateUsers implements UsersValidator {
                 result = userStorage.updateUserWithDepartment(updatedUser);
             }
         }
-            LOG.info("Exit method");
+//            LOG.info("Exit method");
         }
         return result;
     }
@@ -146,7 +146,7 @@ public class ValidateUsers implements UsersValidator {
     }
 
     private User updateUserFields (User user, HttpServletRequest request) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         User updatedUser = (User)user.clone();
         if(validateField(request.getParameter("login"))) {
             updatedUser.setUserLogin(request.getParameter("login"));
@@ -167,12 +167,12 @@ public class ValidateUsers implements UsersValidator {
              updatedUser.setUserDepartment(request.getParameter("department"));
         }
         updatedUser.setActive(request.getParameter("isActive") != null);
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return updatedUser;
     }
 
     private boolean validateField(String value) {
-        LOG.info("Enter and exit method");
+//        LOG.info("Enter and exit method");
         return value != null && !value.equals("");
     }
 }

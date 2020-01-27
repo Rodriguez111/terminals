@@ -13,7 +13,7 @@
 <body>
 <div class="header_strip">
     <div class="menu_container">
-        <div id="logo">Version: 1.0.1<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
+        <div id="logo">Version: 1.0.3<br>Developed by:<br>Ruben Khodzhaev<br>Copyright 2019 ©<br>All Rights Reserved.</div>
         <ul id="main_menu">
             <li class="li" id="left_button"><a class="common_button" href="${pageContext.servletContext.contextPath}/main">Главная</a></li>
             <li class="li"><a class="active_button" href="${pageContext.servletContext.contextPath}/users">Пользователи</a></li>
@@ -215,47 +215,45 @@
         getCountOfActiveUsers();
 
         var mainTable = document.getElementById("main_table");
-        var table = "<tr class=\"table_header\">\n" +
-            "<th id=\"regIdColumn\">Логин</th>\n" +
-            "<th>Фамилия</th>\n" +
-            "<th>Имя</th>\n" +
-            "<th>Роль</th>\n" +
+        var table = "<thead><tr class=\"table_header\">\n" +
+            "<th id=\"headerLoginColumn\">Логин</th>\n" +
+            "<th>Фамилия и имя</th>\n" +
+            "<th id='headerRoleColumn'>Роль</th>\n" +
             "<th>Департамент</th>\n" +
-            "<th>Выдан терминал</th>\n" +
-            "<th>Активен</th>\n" +
-            "<th>Дата создания</th>\n" +
-            "<th>Дата изменения</th>\n" +
-         "<th id=\"updateColumn\">Редактировать</th>\n" +
-                "<th id=\"deleteColumn\">Удалить</th>";
+            "<th id='headerTermRegIdColumn'>Выдан терминал</th>\n" +
+            "<th id='headerActiveColumn'>Активен</th>\n" +
+            "<th id='headerCreateColumn'>Дата создания</th>\n" +
+            "<th id='headerUpdateColumn'>Дата изменения</th>\n" +
+         "<th id=\"headerEditColumn\">Редактировать</th>\n" +
+                "<th id=\"headerDeleteColumn\">Удалить</th>";
 
-        table += " </tr>";
+        table += " </tr></thead>";
         var listOfUsers = data.listOfUsers;
         for(var i = 0; i < listOfUsers.length; i++) {
             var active = listOfUsers[i].active ? "Да" : "Нет";
 
-            table += "<tr class='row'><td class='cell'>" + listOfUsers[i].userLogin + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].userSurname + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].userName + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].userRole + "</td>"
+            table += "<tr class='row'><td id='bodyLoginColumn' class='cell'>" + listOfUsers[i].userLogin + "</td>"
+                +"<td class='cell'>" + listOfUsers[i].userSurname + " " + listOfUsers[i].userName + "</td>"
+                +"<td id='bodyRoleColumn' class='cell'>" + listOfUsers[i].userRole + "</td>"
                 +"<td class='cell'>" + listOfUsers[i].userDepartment + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].terminalRegId + "</td>"
-                +"<td class='cell'>" + active + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].createDate + "</td>"
-                +"<td class='cell'>" + listOfUsers[i].lastUpdateDate + "</td>";
+                +"<td id='bodyTermRegIdColumn' class='cell'>" + listOfUsers[i].terminalRegId + "</td>"
+                +"<td id='bodyActiveColumn' class='cell'>" + active + "</td>"
+                +"<td id='bodyCreateColumn' class='cell'>" + listOfUsers[i].createDate + "</td>"
+                +"<td id='bodyUpdateColumn' class='cell'>" + listOfUsers[i].lastUpdateDate + "</td>";
 
-            table += "<td class='cell' style=\"text-align: center\">";
+            table += "<td id='bodyEditColumn' class='cell' style=\"text-align: center\">";
                 if(listOfUsers[i].userRole !== 'root' || roleOfLoggedInUser === 'root') {
 
                     table += "<form class='forms' method='post' action='${pageContext.servletContext.contextPath}/selector'>"
                         + "<input type='hidden' name='id' value='" + listOfUsers[i].id + "'/>"
                         + "<input type='hidden' name='action' value='update_user'/>"
-                        + "<input type='submit' value='Изменить'>"
+                        + "<input class='editBtn' type='submit' value='Изменить'>"
                         + "</form>";
                 }
 
             table += "</td>";
 
-            table += "<td class='cell' style='text-align: center'>";
+            table += "<td id='bodyDeleteColumn' class='cell' style='text-align: center'>";
             if(listOfUsers[i].userRole !== 'root' ) {
             table += "<form class='delete_forms' method='post' action='${pageContext.servletContext.contextPath}/deleteuser' >"
             + "<input type='hidden' name='id' value='" + listOfUsers[i].id + "'/>"
@@ -269,14 +267,15 @@
 
             table += "</tr>";
         }
-        table += "<tr>"
+        table += "<tfoot><tr>"
+
             + "<td id='table_footer'  colspan='12'>"
             + "<div id='create_button'>"
             + "<form method='post' action='${pageContext.servletContext.contextPath}/selector'>"
             + "<input type='hidden' name='action' value='add_user'/>"
             + "<input type='submit' value='Создать'>"
             + "</form></div>"
-            + "</td></tr>";
+            + "</td></tr></tfoot>";
         mainTable.innerHTML = table;
         prepareForModal();
     }

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBUser implements UserStorage {
-    private static final Logger LOG = LoggerFactory.getLogger(DBUser.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(DBUser.class);
     private final static DBUser INSTANCE = new DBUser();
     private final static DBRole ROLES = DBRole.getINSTANCE();
     private final static DBDepartment DEPARTMENTS = DBDepartment.getINSTANCE();
@@ -36,7 +36,7 @@ public class DBUser implements UserStorage {
 
     @Override
     public List<User> findAllUsers() {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         List<User> resultList = new ArrayList<>();
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT * FROM users";
@@ -47,13 +47,13 @@ public class DBUser implements UserStorage {
                 resultList.add(composeUserFromDBResultSet(resultSet));
             }
         });
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return resultList;
     }
 
     @Override
     public User findUserById(int id) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         User result = null;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT * FROM users WHERE user_id = ?";
@@ -71,7 +71,7 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -98,7 +98,7 @@ public class DBUser implements UserStorage {
 
     @Override
     public int findIdByField(String fieldName, String value) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String queryPattern = "SELECT user_id FROM users WHERE ";
@@ -117,13 +117,13 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public int terminalIsGivenToUser(int terminalId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
        int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT user_id FROM users WHERE terminal_id = ?";
@@ -141,13 +141,13 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public int checkOneTerminalInOneHand(int userId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = 0;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT terminal_id FROM users WHERE user_id = ?";
@@ -165,13 +165,13 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String findFieldById(int id, String fieldName, DataType dataType) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String result = "";
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT " + fieldName + " FROM users WHERE user_id = ?";
@@ -197,13 +197,13 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String addUser(User user) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO users "
                 + "(user_login, user_password, user_name, user_surname, " +
@@ -237,13 +237,13 @@ public class DBUser implements UserStorage {
             }
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return String.valueOf(result);
     }
 
     @Override
     public String addUserWithDepartment(User user) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "INSERT INTO users "
                 + "(user_login, user_password, user_name, user_surname, " +
@@ -279,14 +279,14 @@ public class DBUser implements UserStorage {
             }
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return String.valueOf(result);
     }
 
     @Override
     public String updateUserWithDepartment(User user) {
         String result = "OK";
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE users SET user_login=?, user_password=?, user_name=?, user_surname=?," +
                 " user_role_id=?, user_department_id=?, user_is_active=?, " +
@@ -320,14 +320,14 @@ public class DBUser implements UserStorage {
                 return "Пользователь с таким логином уже существует";
             }
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public String updateUser(User user) {
         String result = "OK";
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE users SET user_login=?, user_password=?, user_name=?, user_surname=?," +
                 " user_role_id=?, user_department_id=null, user_is_active=?, " +
@@ -359,7 +359,7 @@ public class DBUser implements UserStorage {
                 return "Пользователь с таким логином уже существует";
             }
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
@@ -385,18 +385,18 @@ public class DBUser implements UserStorage {
     }
 
     private String formatDate(String date) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String result = "";
         if (date != null) {
             result = date.replaceAll("-", ".");
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
 
     @Override
     public void addTerminalToUser(int userId, int terminalId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE users SET terminal_id=? WHERE user_id=?";
         List<Object> params = new ArrayList<>();
@@ -409,12 +409,12 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     @Override
     public void removeTerminalFromUser(int userId) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "UPDATE users SET terminal_id= NULL WHERE user_id=?";
         List<Object> params = new ArrayList<>();
@@ -426,7 +426,7 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     /**
@@ -438,7 +438,7 @@ public class DBUser implements UserStorage {
      */
     @Override
     public int countOfUsers(String whatToCount) {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         int result = -1;
         QueryManager queryManager = new QueryManager(SQLManager.getINSTANCE().getConnection());
         String query = "SELECT COUNT(user_id) FROM users";
@@ -461,10 +461,8 @@ public class DBUser implements UserStorage {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return result;
     }
-
-
 
 }

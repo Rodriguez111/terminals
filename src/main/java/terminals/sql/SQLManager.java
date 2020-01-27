@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 public class SQLManager {
-    private static final Logger LOG = LoggerFactory.getLogger(SQLManager.class);
+//    private static final Logger LOG = LoggerFactory.getLogger(SQLManager.class);
     private static BasicDataSource SOURCE = new BasicDataSource();
 
     private final static SQLManager INSTANCE = new SQLManager();
@@ -38,13 +38,13 @@ public class SQLManager {
     }
 
     private void initConnection() {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         SOURCE.setUrl("jdbc:sqlite:" + createDBDirectory()); //sqlite
         SOURCE.setDriverClassName("org.sqlite.JDBC");//sqlite
         SOURCE.setMinIdle(5);
         SOURCE.setMaxIdle(10);
         SOURCE.setMaxOpenPreparedStatements(100);
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
     }
 
     public Connection getConnection() {
@@ -70,7 +70,7 @@ public class SQLManager {
     }
 
     private boolean checkTable() {
-        LOG.info("Enter method");
+//        LOG.info("Enter method");
         String query = "SELECT * FROM sqlite_master WHERE name='users'";
         QueryManager queryManager = new QueryManager(getConnection());
         List<Object> params = new ArrayList<>();
@@ -87,7 +87,7 @@ boolean res = false;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        LOG.info("Exit method");
+//        LOG.info("Exit method");
         return res;
     }
 
@@ -194,9 +194,7 @@ boolean res = false;
     }
 
     private static String createDBDirectory() {
-        LOG.info("Enter method");
         new File("c:/terminals_resources/db").mkdirs();
-        LOG.info("Exit method");
         return "c:/terminals_resources/db/terminals.db";
     }
 

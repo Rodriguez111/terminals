@@ -1,15 +1,15 @@
 .table_header {
-    background: rgba(51, 89, 130, 0.53); /* Цвет фона ячеек */
+    background: #7b8fa5;
     padding: 1px; /* Поля вокруг текста */
     text-align: center;
-    font-size:15px;
+    font-size:14px;
     height: 30px;
 }
 
 .main_table {
     width: 100%;
     table-layout:auto; /*Ширина столбцов по содержимому*/
-    background: #ccc;
+    background: #7b8fa5;
     border-radius: 12px;
     border-spacing: 0;
     border-collapse: collapse; /* Убираем двойные линии между ячейками */
@@ -30,22 +30,12 @@
 }
 
 .cell {
-    border: 1px solid #ebebeb;
+    /*border: 1px solid #ebebeb;*/
     text-align: left;
     font-size:14px;
+    overflow: hidden;
     padding-left: 5px;
-}
-
-#regIdColumn {
-    width: 130px;
-}
-
-#updateColumn {
-    width: 120px;
-}
-
-#deleteColumn {
-    width: 90px;
+    overflow: hidden;
 }
 
 .main_block {
@@ -65,8 +55,10 @@ th:last-child {
 #table_footer {
     position: relative;
     height: 50px;
-    /*padding-top: 18px;*/
     padding-bottom: 25px;
+    background: #98adc3;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 #create_button {
@@ -108,9 +100,6 @@ th:last-child {
     right: 40px;
 }
 
-
-
-
  .check_box_container {
      position: absolute;
      left: 40px;
@@ -120,3 +109,105 @@ th:last-child {
  #show_only_active {
      margin-top: 3px;
  }
+
+tbody {
+    display:block;
+    min-height: 100px;
+    max-height: 480px;
+    overflow:auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+
+}
+thead {
+    width: calc( 100% - 1em );/* scrollbar is average 1em/16px width, remove it from thead width */
+
+}
+
+table tbody td {
+    border: 1px solid #ebebeb;
+}
+
+#headerRegIdColumn {
+    width: 90px;
+}
+
+#bodyRegIdColumn {
+    width: 85px;
+}
+
+#headerModelColumn {
+    width: 80px;
+}
+
+#bodyModelColumn {
+    width: 75px;
+}
+
+#headerCommentColumn {
+    max-width: 200px;
+}
+
+#bodyCommentColumn {
+    max-width: 195px;
+}
+
+#headerUserLoginColumn {
+    width: 100px;
+}
+
+#bodyUserLoginColumn {
+    width: 95px;
+}
+
+#headerActiveColumn {
+    width: 60px;
+}
+
+#bodyActiveColumn {
+    width: 55px;
+}
+
+#headerCreateColumn {
+    width: 130px;
+}
+
+#bodyCreateColumn {
+    width: 125px;
+}
+
+#headerUpdateColumn {
+    width: 130px;
+}
+
+#bodyUpdateColumn {
+    width: 125px;
+}
+
+#headerEditColumn {
+    width: 100px;
+}
+
+#bodyEditColumn {
+    width: 95px;
+}
+
+#headerDeleteColumn {
+    width: 80px;
+}
+
+#bodyDeleteColumn {
+    width: 75px;
+}
+
+.editBtn, .deleteBtn {
+    height: 16px;
+    font-size: 12px;
+    padding: 0 7px 0 7px;
+}

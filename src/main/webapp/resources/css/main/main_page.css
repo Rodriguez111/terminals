@@ -164,6 +164,10 @@ th:last-child {
 .table_footer {
     padding-top: 18px;
     padding-left: 12px;
+    background: #98adc3;
+    height: 40px;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
 .row:hover {

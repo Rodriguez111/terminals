@@ -20,7 +20,7 @@ public class MainTerminals extends HttpServlet {
         req.setAttribute("listOfTerminals", TERMINALS_VALIDATOR.findAllTerminals());
         req.setAttribute("listOfDeparts", DEPARTMENTS_VALIDATOR.findAllDepartments());
         req.getRequestDispatcher(Pages.MAIN_TERMINALS_JSP.page).forward(req, resp);
-
+        long end = System.currentTimeMillis();
     }
 
     @Override

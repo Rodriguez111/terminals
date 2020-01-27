@@ -20,58 +20,22 @@
 </div>
 <c:forEach items="${sessionScope.listOfTerminals}" var="eachTerminal" varStatus="theCount">
 
-    <c:choose>
-        <c:when test="${theCount.count==1 || (theCount.count - 1)%60==0}"> <!-- 1-й на странице -->
-            <div class="page_frame">
-            <table class="barcode_table">
+
+<div class="page_frame">
+    <table class="barcode_table">
+        <c:forEach var="i" begin="1" end="5" step="1">
             <tr class="barcode_row">
-            <td class="barcode_cell">
-                <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
-                     width="130" height="50">
-                    ${eachTerminal.regId}
-            </td>
-        </c:when>
-
-        <c:when test="${theCount.count %60==0}"> <!-- Последний на странице -->
-
-            <td class="barcode_cell">
-                <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
-                     width="130" height="50">
-                    ${eachTerminal.regId}
-            </td>
+                <td class="barcode_cell">
+                    <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
+                         width="148" height="51">
+                        ${eachTerminal.regId}
+                </td>
             </tr>
-            </table>
-            </div>
-        </c:when>
+        </c:forEach>
+    </table>
+</div>
 
 
-        <c:when test="${(theCount.count - 1) %5==0}"> <!-- Первый в строке -->
-            <tr class="barcode_row">
-            <td class="barcode_cell">
-                <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
-                     width="130" height="50">
-                    ${eachTerminal.regId}
-            </td>
-        </c:when>
-
-        <c:when test="${theCount.count %5==0}"> <!-- Последний в строке -->
-
-            <td class="barcode_cell">
-                <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
-                     width="130" height="50">
-                    ${eachTerminal.regId}
-            </td>
-            </tr>
-        </c:when>
-
-        <c:otherwise>
-            <td class="barcode_cell">
-                <img src="${pageContext.servletContext.contextPath}/generatebarcode?barcodeText=${eachTerminal.inventoryId}&displayText=${eachTerminal.regId}"
-                     width="130" height="50">
-                    ${eachTerminal.regId}
-            </td>
-        </c:otherwise>
-    </c:choose>
 </c:forEach>
 </body>
 </html>

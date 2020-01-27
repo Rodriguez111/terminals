@@ -19,8 +19,10 @@ function onWindowLoad(){
     modalOverlay = document.querySelector('.modal-overlay');
     infoField = document.getElementById('info-field');
 
-
     terminalInputFocus();
+    terminalsRemainColor();
+
+
 
     document.onkeydown = function keyPress (e) {
         if(e.key === "Escape") {
@@ -63,7 +65,7 @@ function onWindowLoad(){
 
 function validateTerminalInputEvent(event) {
     var result = true;
-    if (inputTerminalField.value.includes(' ')) {
+    if (inputTerminalField.value.indexOf(' ') !== - 1) {
         inputTerminalField.value = '';
         result = false;
     } else {
@@ -74,7 +76,7 @@ function validateTerminalInputEvent(event) {
 
 function validateUserInputEvent(event) {
     var result = true;
-    if (inputUserField.value.includes(' ')) {
+    if (inputUserField.value.indexOf(' ') !== - 1) {
         inputUserField.value = '';
         result = false;
     } else {
@@ -252,12 +254,13 @@ function receiveTerminalFromUser() {
 }
 
 
-
 function loadTerminalsStatistic(total, inactive, given, remain) {
     document.getElementById("terminalsTotalInfo").innerHTML = total;
     document.getElementById("terminalsInactiveInfo").innerHTML = inactive;
     document.getElementById("terminalsGivenInfo").innerHTML = given;
     document.getElementById("terminalsRemainInfo").innerHTML = remain;
+    terminalsRemainColor();
+
 }
 
 
@@ -277,5 +280,20 @@ function sendAjaxData(url, data, callback) {
 
 function photoLink(folder, fileName) {
     return "<img id='img' src=\"${pageContext.servletContext.contextPath}/generatephoto?folder="
-        + folder + "&fileName=" + fileName + ".jpg\" width=\"380px\" height=\"380px\" alt=''>";
+        + folder + "&fileName=" + fileName + ".jpg\" width=\"304px\" height=\"304px\" alt=''>";
+}
+
+function terminalsRemainColor() {
+    var terminalsRemainInfo = document.getElementById("terminalsRemainInfo");
+    var terminalsRemain = terminalsRemainInfo.innerHTML;
+    if(terminalsRemain == 0) {
+        terminalsRemainInfo.style.color = "#c2181a";
+    } else if(terminalsRemain > 0 && terminalsRemain <= 3) {
+        terminalsRemainInfo.style.color = "#ffad1c";
+        terminalsRemainInfo.style.textShadow = "2px 2px 1px #c2181a, 0 2px 1px #c2181a, -2px 0 1px #c2181a, 0 -2px 1px #c2181a";
+    } else {
+        terminalsRemainInfo.style.color = "";
+        terminalsRemainInfo.style.textShadow = "";
+    }
+
 }

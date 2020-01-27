@@ -1,15 +1,15 @@
 .table_header {
-    background: rgba(51, 89, 130, 0.53); /* Цвет фона ячеек */
+    background: #7b8fa5;
     padding: 1px; /* Поля вокруг текста */
     text-align: center;
-    font-size:15px;
+    font-size:14px;
     height: 30px;
 }
 
 .main_table {
     width: 100%;
     table-layout:auto; /*Ширина столбцов по содержимому*/
-    background: #ccc;
+    background: #7b8fa5;
     border-radius: 12px;
     border-spacing: 0;
     border-collapse: collapse; /* Убираем двойные линии между ячейками */
@@ -26,12 +26,14 @@
 .row {
     background: #c8d2dd; /* Цвет фона ячеек */
     padding: 5px; /* Поля вокруг текста */
+
 }
 
 .cell {
-    border: 1px solid #ebebeb;
+    /*border: 1px solid #ebebeb;*/
     text-align: left;
     font-size:14px;
+    overflow: hidden;
     padding-left: 5px;
 }
 
@@ -52,17 +54,12 @@ th:last-child {
 #table_footer {
     position: relative;
     height: 50px;
-    /*padding-top: 18px;*/
     padding-bottom: 25px;
+    background: #98adc3;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
 }
 
-#updateColumn {
-    width: 120px;
-}
-
-#deleteColumn {
-    width: 90px;
-}
 
 .row:hover {
     background-color: #abb5c0;
@@ -108,3 +105,112 @@ th:last-child {
     top: 15px;
     left: 70px;
 }
+
+
+
+tbody {
+    display:block;
+    min-height: 100px;
+    max-height: 480px;
+    overflow:auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+
+}
+thead, tbody tr {
+    display:table;
+    width:100%;
+    table-layout:fixed;/* even columns width , fix width of table too*/
+
+}
+thead {
+    width: calc( 100% - 1em )/* scrollbar is average 1em/16px width, remove it from thead width */
+}
+
+table tbody td {
+    border: 1px solid #ebebeb;
+}
+
+
+#headerLoginColumn {
+    width: 100px;
+}
+
+#bodyLoginColumn {
+    width: 95px;
+}
+
+#headerRoleColumn {
+    width: 100px;
+}
+
+#bodyRoleColumn {
+    width: 95px;
+}
+
+#headerTermRegIdColumn {
+    width: 90px;
+}
+
+#bodyTermRegIdColumn {
+    width: 85px;
+}
+
+
+
+#headerActiveColumn {
+    width: 60px;
+}
+
+#bodyActiveColumn {
+    width: 55px;
+}
+
+#headerCreateColumn {
+    width: 130px;
+}
+
+#bodyCreateColumn {
+    width: 125px;
+
+}
+
+#headerUpdateColumn {
+    width: 130px;
+
+}
+
+#bodyUpdateColumn {
+    width: 125px;
+}
+
+
+
+
+
+#headerEditColumn {
+    width: 100px;
+}
+
+#bodyEditColumn {
+    width: 95px;
+
+}
+
+
+#headerDeleteColumn {
+    width: 80px;
+}
+
+#bodyDeleteColumn {
+    width: 75px
+}
+
+.editBtn, .deleteBtn {
+    height: 16px;
+    font-size: 12px;
+    padding: 0 7px 0 7px;
+}
+
+
+

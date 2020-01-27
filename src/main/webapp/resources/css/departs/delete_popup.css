@@ -13,7 +13,7 @@ button {}
 }
 .modal {
     background: rgba(0,0,0,0.2);
-    position: absolute;
+    position: fixed;
     display: none;
     justify-content: center;
     top: 0;

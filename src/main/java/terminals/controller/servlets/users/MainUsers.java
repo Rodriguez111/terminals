@@ -19,8 +19,7 @@ public class MainUsers extends HttpServlet {
         req.setAttribute("listOfUsers", USERS_VALIDATOR.findAllUsers());
         req.setAttribute("listOfDeparts", DEPARTMENTS_VALIDATOR.findAllDepartments());
         req.setAttribute("listOfRoles", ROLES_VALIDATOR.findAllRoles());
-       req.getRequestDispatcher(Pages.MAIN_USERS_JSP.page).forward(req, resp);
-
+        req.getRequestDispatcher(Pages.MAIN_USERS_JSP.page).forward(req, resp);
     }
 
     @Override

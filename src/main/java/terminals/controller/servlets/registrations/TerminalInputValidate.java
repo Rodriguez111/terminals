@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class TerminalInputValidate extends HttpServlet {
-    private static final Logger LOG = LoggerFactory.getLogger(TerminalInputValidate.class);
+
     private final static RegValidator REGS_VALIDATOR = ValidateRegs.getINSTANCE();
 
     @Override
@@ -32,7 +32,7 @@ public class TerminalInputValidate extends HttpServlet {
         }
         String stringFromClient = builder.toString();
         stringFromClient = stringFromClient.replaceAll("\"", "");
-        LOG.info("From client: " + stringFromClient);
+
         JSONObject result = REGS_VALIDATOR.validateTerminalInput(stringFromClient);
         req.setAttribute("serverResponse", result);
         doGet(req, resp);
@@ -41,7 +41,6 @@ public class TerminalInputValidate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         JSONObject serverResponse = (JSONObject) req.getAttribute("serverResponse");
-        LOG.info("From server: " + serverResponse);
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         out.print(serverResponse);
